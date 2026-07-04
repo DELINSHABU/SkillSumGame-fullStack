@@ -48,6 +48,12 @@
   --world-7: #f72585;
   --world-8: #1a237e;
 
+  /* Level node states */
+  --node-gold-gradient: linear-gradient(135deg, #ffd700, #ffb300);
+  --node-played-gradient: linear-gradient(135deg, #64b5f6, #1e88e5);
+  --node-unlocked: #e5e7eb;
+  --node-locked: #d1d5db;
+
   /* Shadows */
   --shadow-btn-primary: 0 6px 0 #c55f85;
   --shadow-btn-success: 0 6px 0 #388e3c;

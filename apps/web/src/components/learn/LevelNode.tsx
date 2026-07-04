@@ -18,14 +18,14 @@ export function LevelNode({ level, stars, state, onSelect }: LevelNodeProps) {
 
   const background =
     state === 'gold'
-      ? 'linear-gradient(135deg, #ffd700, #ffb300)'
+      ? 'var(--node-gold-gradient)'
       : state === 'silver' || state === 'bronze'
-        ? 'linear-gradient(135deg, #64b5f6, #1e88e5)'
+        ? 'var(--node-played-gradient)'
         : state === 'current'
           ? 'var(--pink-300)'
           : state === 'unlocked'
-            ? '#e5e7eb'
-            : '#d1d5db';
+            ? 'var(--node-unlocked)'
+            : 'var(--node-locked)';
 
   return (
     <div className="flex flex-col items-center gap-1 w-20">
