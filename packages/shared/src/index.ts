@@ -6,3 +6,4 @@ export * from './weakSpots';
 export * from './achievements';
 export * from './daily';
 export * from './levels';
+export * from './configKey';
