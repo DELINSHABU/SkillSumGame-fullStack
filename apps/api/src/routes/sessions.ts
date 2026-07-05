@@ -1,4 +1,4 @@
-import { zValidator } from '@hono/zod-validator';
+import { validate } from '../lib/validate';
 import { and, desc, eq, sql } from 'drizzle-orm';
 import { Hono } from 'hono';
 import { z } from 'zod';
@@ -71,7 +71,7 @@ export const sessionRoutes = new Hono<AuthEnv>()
   .use('*', requireAuth)
 
   // The core write: recompute everything server-side, never trust client totals.
-  .post('/', zValidator('json', submitSchema), async (c) => {
+  .post('/', validate('json', submitSchema), async (c) => {
     const userId = c.get('userId');
     const body = c.req.valid('json');
     const attempts = body.attempts as QuestionAttempt[];

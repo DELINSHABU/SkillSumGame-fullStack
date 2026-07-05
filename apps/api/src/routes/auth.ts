@@ -1,4 +1,4 @@
-import { zValidator } from '@hono/zod-validator';
+import { validate } from '../lib/validate';
 import { eq } from 'drizzle-orm';
 import { Hono } from 'hono';
 import { deleteCookie, setCookie } from 'hono/cookie';
@@ -10,9 +10,13 @@ import { db } from '../db/client';
 import { profiles, users } from '../db/schema';
 
 const signupSchema = z.object({
-  email: z.string().email().max(254),
-  username: z.string().min(2).max(24).regex(/^[a-zA-Z0-9_ ]+$/),
-  password: z.string().min(8).max(128),
+  email: z.string().email('Enter a valid email address').max(254),
+  username: z
+    .string()
+    .min(2, 'Username must be at least 2 characters')
+    .max(24, 'Username must be at most 24 characters')
+    .regex(/^[a-zA-Z0-9._\- ]+$/, 'Username can use letters, numbers, spaces, dots, dashes and underscores'),
+  password: z.string().min(8, 'Password must be at least 8 characters').max(128),
 });
 
 const loginSchema = z.object({
@@ -31,7 +35,7 @@ function setSessionCookie(c: Parameters<typeof setCookie>[0], token: string, exp
 }
 
 export const authRoutes = new Hono<AuthEnv>()
-  .post('/signup', zValidator('json', signupSchema), async (c) => {
+  .post('/signup', validate('json', signupSchema), async (c) => {
     const { email, username, password } = c.req.valid('json');
 
     const [existingUser] = await db.select({ id: users.id }).from(users).where(eq(users.email, email.toLowerCase())).limit(1);
@@ -49,7 +53,7 @@ export const authRoutes = new Hono<AuthEnv>()
     setSessionCookie(c, token, expiresAt);
     return c.json({ id: user.id, email: user.email, username }, 201);
   })
-  .post('/login', zValidator('json', loginSchema), async (c) => {
+  .post('/login', validate('json', loginSchema), async (c) => {
     const { email, password } = c.req.valid('json');
 
     const [user] = await db.select().from(users).where(eq(users.email, email.toLowerCase())).limit(1);

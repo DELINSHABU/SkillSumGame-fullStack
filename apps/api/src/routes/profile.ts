@@ -1,4 +1,4 @@
-import { zValidator } from '@hono/zod-validator';
+import { validate } from '../lib/validate';
 import { eq, sql } from 'drizzle-orm';
 import { Hono } from 'hono';
 import { z } from 'zod';
@@ -49,7 +49,7 @@ export const profileRoutes = new Hono<AuthEnv>()
     });
   })
 
-  .patch('/', zValidator('json', patchSchema), async (c) => {
+  .patch('/', validate('json', patchSchema), async (c) => {
     const updates = c.req.valid('json');
     const [updated] = await db
       .update(profiles)
