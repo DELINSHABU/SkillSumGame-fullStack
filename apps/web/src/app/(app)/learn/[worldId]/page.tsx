@@ -2,22 +2,20 @@
 
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
 import { getLevelsByWorld, WORLDS_META } from '@skillsum/shared';
 import { WorldMap } from '@/components/learn/WorldMap';
-import { LoadingScreen } from '@/components/shared/LoadingScreen';
-import { api, type MasteryRow } from '@/lib/api';
+import { WorldMapSkeleton } from '@/components/learn/WorldMapSkeleton';
+import { api } from '@/lib/api';
+import { useResource } from '@/lib/cache';
+import { GameIcon } from '@/components/ui/GameIcon';
 
 export default function WorldMapPage() {
   const params = useParams<{ worldId: string }>();
   const worldId = Number(params.worldId);
-  const [mastery, setMastery] = useState<MasteryRow[] | null>(null);
-
-  useEffect(() => {
-    if (Number.isInteger(worldId) && worldId >= 1 && worldId <= 8) {
-      void api.mastery.list(worldId).then(setMastery);
-    }
-  }, [worldId]);
+  const valid = Number.isInteger(worldId) && worldId >= 1 && worldId <= 8;
+  const { data: mastery } = useResource(valid ? `mastery?worldId=${worldId}` : null, () =>
+    api.mastery.list(worldId)
+  );
 
   const meta = WORLDS_META.find((w) => w.id === worldId);
   if (!meta) {
@@ -28,7 +26,7 @@ export default function WorldMapPage() {
       </div>
     );
   }
-  if (!mastery) return <LoadingScreen message={`Entering ${meta.name}…`} />;
+  if (!mastery) return <WorldMapSkeleton />;
 
   const levels = getLevelsByWorld(worldId);
 
@@ -37,7 +35,7 @@ export default function WorldMapPage() {
       <div className={`rounded-3xl p-5 world-${worldId}-gradient`} style={{ color: 'var(--text-on-pink)' }}>
         <Link href="/learn" className="text-sm opacity-80">← All worlds</Link>
         <div className="flex items-center gap-3 mt-2">
-          <span className="text-4xl">{meta.icon}</span>
+          <span className="text-4xl"><GameIcon emoji={meta.icon} /></span>
           <div>
             <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.5rem' }}>
               World {worldId}: {meta.name}

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <defs>
+    <style>
+      .outline { fill: none; stroke: #31162B; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+      .filled { stroke: #31162B; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+      .highlight { fill: #FFFFFF; }
+      .accent { fill: #31162B; }
+    </style>
+  </defs>
+  
+    <g transform="translate(18, 65) scale(0.7)">
+      <path d="M0 -10 Q0 0 10 0 Q0 0 0 10 Q0 0 -10 0 Q0 0 0 -10 Z" fill="#FFD166"/>
+      <circle cx="70" cy="-50" r="3" fill="#FFD166"/>
+    </g>
+  
+    <g transform="translate(80, 80) scale(0.5)">
+      <path d="M0 -10 Q0 0 10 0 Q0 0 0 10 Q0 0 -10 0 Q0 0 0 -10 Z" fill="#FFD166"/>
+      
+    </g>
+  
+  
+    <!-- Ribbons -->
+    <path class="filled" fill="#118AB2" d="M30 10 L45 45 L50 40 L55 45 L70 10 Z" />
+    <path fill="#0B525B" d="M50 40 L55 45 L70 10 L60 10 Z" opacity="0.4"/>
+    <!-- Medal -->
+    <circle class="filled" cx="50" cy="65" r="28" fill="#FFD166" />
+    <path fill="#F4A261" d="M50 93 A28 28 0 0 0 78 65 A28 28 0 0 1 50 85 A28 28 0 0 1 22 65 A28 28 0 0 0 50 93 Z" />
+    <circle class="filled" cx="50" cy="65" r="15" fill="#FFF3B0" stroke-width="4"/>
+    <!-- Highlight -->
+    <path class="highlight" d="M30 55 A20 20 0 0 1 45 42 A22 22 0 0 0 30 60 Z" />
+    <circle class="highlight" cx="28" cy="68" r="2.5"/>
+    <animateTransform attributeName="transform" type="rotate" values="-3 50 50; 3 50 50; -3 50 50" dur="1.5s" repeatCount="indefinite" />
+  
+</svg>

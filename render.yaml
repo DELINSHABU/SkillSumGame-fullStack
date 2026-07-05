@@ -14,11 +14,12 @@ services:
     runtime: node
     plan: free
     region: oregon
-    # `--include=dev` forces devDependencies (tsx, drizzle-kit) to install even
-    # though NODE_ENV=production — the API is run through tsx at runtime, and
-    # migrations need drizzle-kit. Then apply pending migrations (idempotent).
-    buildCommand: npm install --include=dev && npm run db:migrate --workspace apps/api
-    startCommand: npm start --workspace apps/api
+    # `--include=dev` forces devDependencies (esbuild, drizzle-kit) to install even
+    # though NODE_ENV=production — the build bundles the API with esbuild and
+    # migrations need drizzle-kit. Apply pending migrations (idempotent), then
+    # precompile to dist/ so startup runs plain `node` (no tsx transpile-on-boot).
+    buildCommand: npm install --include=dev && npm run db:migrate --workspace apps/api && npm run build --workspace apps/api
+    startCommand: npm run start:prod --workspace apps/api
     healthCheckPath: /api/health
     autoDeploy: true
     envVars:
@@ -26,5 +27,13 @@ services:
       - key: NODE_ENV
         value: production
       # Paste your Neon connection string here in the dashboard (kept out of git).
+      # Latency checklist for the cold-start work:
+      #   1. Use Neon's POOLED host — the one with `-pooler` in the domain (pgbouncer).
+      #      It sets up connections faster than the direct endpoint, which matters on
+      #      every cold boot.
+      #   2. Keep all three regions aligned to us-west (Oregon): this Render service
+      #      (region: oregon above), the Neon project, and the Vercel project. Each
+      #      request hops browser -> Vercel -> Render -> Neon; cross-region legs add a
+      #      full RTT apiece.
       - key: DATABASE_URL
         sync: false

@@ -25,6 +25,34 @@ export type LevelType = 'intro' | 'standard' | 'boss' | 'bonus' | 'speedrun' | '
 
 export type Difficulty = 'easy' | 'medium' | 'hard';
 
+// UI theme preference (persisted per user). Named CSS-variable palettes;
+// 'system' resolves to arcade-light or arcade-dark via the device OS setting.
+export const THEMES = [
+  'system',
+  'arcade-light',
+  'arcade-dark',
+  'serika',
+  'serika-dark',
+  'nord',
+  'gruvbox-dark',
+  'dracula',
+  'botanical',
+  'mush',
+  'ocean',
+  'rose-dark',
+  'cream',
+  'mint',
+  'sky',
+  'lavender',
+  'cobalt',
+  'matrix',
+  'sunset-dark',
+  'cosmic',
+] as const;
+export type Theme = (typeof THEMES)[number];
+/** Concrete theme ids (no 'system'). Used where the palette is actually applied. */
+export type ThemeId = Exclude<Theme, 'system'>;
+
 // ============================================================
 // LEVEL DEFINITION
 // ============================================================

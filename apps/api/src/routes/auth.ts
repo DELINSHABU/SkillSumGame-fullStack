@@ -3,6 +3,7 @@ import { eq } from 'drizzle-orm';
 import { Hono } from 'hono';
 import { deleteCookie, setCookie } from 'hono/cookie';
 import { z } from 'zod';
+import { normalizeTheme } from '@skillsum/shared';
 import { hashPassword, verifyPassword } from '../auth/password';
 import { createSession, deleteSession, SESSION_COOKIE } from '../auth/session';
 import { requireAuth, type AuthEnv } from '../auth/middleware';
@@ -88,6 +89,7 @@ export const authRoutes = new Hono<AuthEnv>()
         dailyGoalMinutes: profiles.dailyGoalMinutes,
         onboardingComplete: profiles.onboardingComplete,
         mathLevel: profiles.mathLevel,
+        theme: profiles.theme,
       })
       .from(users)
       .innerJoin(profiles, eq(profiles.userId, users.id))

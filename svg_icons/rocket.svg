@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <defs>
+    <style>
+      .outline { fill: none; stroke: #31162B; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+      .filled { stroke: #31162B; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+      .highlight { fill: #FFFFFF; }
+      .accent { fill: #31162B; }
+    </style>
+  </defs>
+  
+    <g transform="translate(20, 20) scale(0.8)">
+      <path d="M0 -10 Q0 0 10 0 Q0 0 0 10 Q0 0 -10 0 Q0 0 0 -10 Z" fill="#118AB2"/>
+      <circle cx="-10" cy="60" r="3" fill="#118AB2"/>
+    </g>
+  
+    <g transform="translate(80, 15) scale(0.5)">
+      <path d="M0 -10 Q0 0 10 0 Q0 0 0 10 Q0 0 -10 0 Q0 0 0 -10 Z" fill="#EF476F"/>
+      
+    </g>
+  
+  
+    <g transform="rotate(45 50 50)">
+      <!-- Fins -->
+      <path class="filled" fill="#EF476F" d="M30 60 L15 75 L35 80 Z" />
+      <path class="filled" fill="#EF476F" d="M70 60 L85 75 L65 80 Z" />
+      <!-- Body -->
+      <path class="filled" fill="#118AB2" d="M50 15 C70 15, 75 40, 75 60 L65 85 L35 85 L25 60 C25 40, 30 15, 50 15 Z" />
+      <path fill="#073B4C" d="M50 85 L75 60 C75 40, 70 15, 50 15 C60 25, 65 45, 65 60 L55 85 Z" opacity="0.3"/>
+      <!-- Window -->
+      <circle class="filled" cx="50" cy="45" r="12" fill="#FFFFFF" />
+      <circle class="filled" cx="50" cy="45" r="8" fill="#06D6A0" stroke-width="3"/>
+      <!-- Flame -->
+      <path class="filled" fill="#FFD166" d="M40 85 Q50 115 60 85 Z">
+        <animate attributeName="d" values="M40 85 Q50 115 60 85 Z; M42 85 Q50 105 58 85 Z; M40 85 Q50 115 60 85 Z" dur="0.3s" repeatCount="indefinite"/>
+      </path>
+      <!-- Highlight -->
+      <path class="highlight" d="M35 30 A20 20 0 0 1 45 20 A22 22 0 0 0 35 35 Z" />
+      <circle class="highlight" cx="33" cy="40" r="2"/>
+    </g>
+    <animateTransform attributeName="transform" type="translate" values="0,0; 3,-3; 0,0" dur="1s" repeatCount="indefinite" />
+  
+</svg>

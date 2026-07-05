@@ -1,4 +1,5 @@
 export * from './types';
+export * from './themes';
 export * from './rng';
 export * from './generator';
 export * from './xp';

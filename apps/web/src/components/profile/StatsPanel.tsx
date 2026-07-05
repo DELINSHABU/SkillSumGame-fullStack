@@ -3,6 +3,7 @@
 import { getLevelsByWorld, WORLDS_META } from '@skillsum/shared';
 import type { FullProfile, MasteryRow } from '@/lib/api';
 import { formatDuration } from '@/lib/utils';
+import { GameIcon } from '@/components/ui/GameIcon';
 
 interface StatsPanelProps {
   profile: FullProfile;
@@ -49,7 +50,7 @@ export function StatsPanel({ profile, mastery }: StatsPanelProps) {
           return (
             <div key={world.id}>
               <div className="flex justify-between text-sm mb-1" style={{ color: 'var(--text-secondary)' }}>
-                <span>{world.icon} {world.name}</span>
+                <span><GameIcon emoji={world.icon} /> {world.name}</span>
                 <span style={{ fontFamily: 'var(--font-mono)' }}>{done}/{count}</span>
               </div>
               <div className="h-2 rounded-full" style={{ backgroundColor: 'var(--bg-surface)' }}>

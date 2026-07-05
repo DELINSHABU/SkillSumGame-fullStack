@@ -5,6 +5,7 @@ import type { Level } from '@skillsum/shared';
 import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { StarRow } from '@/components/shared/StarRow';
 import type { MasteryRow } from '@/lib/api';
+import { GameIcon } from '@/components/ui/GameIcon';
 
 interface LevelDetailSheetProps {
   level: Level;
@@ -22,7 +23,7 @@ export function LevelDetailSheet({ level, mastery, onClose }: LevelDetailSheetPr
         type="button"
         aria-label="Close"
         className="absolute inset-0 w-full"
-        style={{ backgroundColor: 'rgba(0,0,0,0.4)' }}
+        style={{ backgroundColor: 'var(--scrim)' }}
         onClick={onClose}
       />
       {/* Sheet */}
@@ -34,7 +35,7 @@ export function LevelDetailSheet({ level, mastery, onClose }: LevelDetailSheetPr
 
         <div className="text-label mb-1" style={{ color: 'var(--text-tertiary)' }}>
           {level.worldName} · Level {((level.id - 1) % 50) + 1}
-          {level.type === 'boss' && ' · 👑 BOSS'}
+          {level.type === 'boss' && <>&nbsp;·&nbsp;<GameIcon emoji="👑" /> BOSS</>}
         </div>
         <h2 className="text-h1 mb-2">{level.title}</h2>
         <p className="mb-4" style={{ color: 'var(--text-secondary)' }}>{level.description}</p>
@@ -61,7 +62,7 @@ export function LevelDetailSheet({ level, mastery, onClose }: LevelDetailSheetPr
         </div>
 
         <PrimaryButton fullWidth onClick={() => router.push(`/play/${level.id}`)}>
-          🚀 Start Level
+          <GameIcon emoji="🚀" /> Start Level
         </PrimaryButton>
       </div>
     </div>

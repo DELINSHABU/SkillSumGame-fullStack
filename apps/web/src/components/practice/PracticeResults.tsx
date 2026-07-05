@@ -1,10 +1,17 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import type { QuestionAttempt } from '@skillsum/shared';
+import { ChartSkeleton } from '@/components/practice/ChartSkeleton';
 import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import type { SessionSaveResult } from '@/lib/api';
+
+// Lazy-load the recharts-backed chart so recharts stays out of the practice bundle.
+const PaceChart = dynamic(() => import('@/components/practice/PaceChart').then((m) => m.PaceChart), {
+  ssr: false,
+  loading: () => <ChartSkeleton />,
+});
 
 interface PracticeResultsProps {
   result: SessionSaveResult;
@@ -67,21 +74,7 @@ export function PracticeResults({ result, attempts, onRetry, onReconfigure }: Pr
         <div className="text-stat" style={{ color: 'var(--xp-gold)' }}>+{result.xpBreakdown.total} XP</div>
       </div>
 
-      {blocks.length > 1 && (
-        <div className="rounded-2xl p-4" style={{ backgroundColor: 'var(--bg-card)', boxShadow: 'var(--shadow-md)' }}>
-          <div className="text-label mb-3 text-left" style={{ color: 'var(--text-secondary)' }}>Pace — correct per 10s</div>
-          <div style={{ width: '100%', height: 160 }}>
-            <ResponsiveContainer>
-              <BarChart data={blocks}>
-                <XAxis dataKey="block" tick={{ fontSize: 11 }} stroke="var(--text-tertiary)" />
-                <YAxis allowDecimals={false} tick={{ fontSize: 11 }} stroke="var(--text-tertiary)" width={24} />
-                <Tooltip cursor={{ fill: 'var(--pink-50)' }} />
-                <Bar dataKey="correct" fill="var(--pink-300)" radius={[6, 6, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-      )}
+      {blocks.length > 1 && <PaceChart blocks={blocks} />}
 
       <div className="flex flex-col gap-2">
         <PrimaryButton fullWidth onClick={onRetry}>🔄 Same Again</PrimaryButton>

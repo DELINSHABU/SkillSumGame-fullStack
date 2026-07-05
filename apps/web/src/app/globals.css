@@ -63,6 +63,1045 @@
   --shadow-lg: 0 6px 0 0 rgba(0, 0, 0, 0.12);
   --glow-primary: 0 0 20px rgba(255, 128, 171, 0.4);
   --glow-gold: 0 0 20px rgba(255, 215, 0, 0.5);
+
+  /* Overlays */
+  --scrim: rgba(0, 0, 0, 0.4);
+  --shadow-nav: 0 -2px 8px rgba(0, 0, 0, 0.06);
+
+  color-scheme: light;
+}
+
+/* ============================================================
+   Named themes — token overrides only (components read var() and
+   need no changes). Applied via data-theme="<id>" on <html>,
+   set pre-paint by the init script in app/layout.tsx.
+   :root holds the arcade-light palette as the default fallback.
+   ============================================================ */
+[data-theme='arcade-dark'] {
+  /* Pink scale — accents stay vivid; light-pink surface tokens become dark rose */
+  --pink-50: #2a1b24;
+  --pink-100: #3a2431;
+  --pink-200: #7a3d54;
+  --pink-300: #ff80ab;
+  --pink-400: #ff6ea0;
+  --pink-500: #ff9ec2;
+  --pink-600: #d16f8e;
+
+  --bg-canvas: #17131c;
+  --bg-card: #221b29;
+  --bg-surface: #2b2233;
+
+  --text-primary: #f6eef3;
+  --text-secondary: #b7aec1;
+  --text-tertiary: #857c91;
+  --text-on-pink: #ffffff;
+
+  --correct: #5cc46a;
+  --wrong: #ff5d52;
+  --streak: #ff7d4d;
+  --xp-gold: #ffd85a;
+
+  --star-gold: #ffd85a;
+  --star-silver: #cfd2d6;
+  --star-bronze: #d68a4a;
+  --star-empty: #453d51;
+
+  --world-1: #ff8fab;
+  --world-2: #ffab54;
+  --world-3: #2fd6bd;
+  --world-4: #b06fe0;
+  --world-5: #ff6b68;
+  --world-6: #5fb4ff;
+  --world-7: #ff4d94;
+  --world-8: #7986e0;
+
+  --node-gold-gradient: linear-gradient(135deg, #ffd85a, #ffb300);
+  --node-played-gradient: linear-gradient(135deg, #64b5f6, #1e88e5);
+  --node-unlocked: #3a3444;
+  --node-locked: #2a2532;
+
+  --shadow-btn-primary: 0 6px 0 #b3455f;
+  --shadow-btn-success: 0 6px 0 #2f7d3a;
+  --shadow-btn-info: 0 6px 0 #1257a8;
+  --shadow-sm: 0 2px 0 0 rgba(0, 0, 0, 0.45);
+  --shadow-md: 0 4px 0 0 rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 6px 0 0 rgba(0, 0, 0, 0.55);
+  --glow-primary: 0 0 20px rgba(255, 128, 171, 0.35);
+  --glow-gold: 0 0 20px rgba(255, 215, 0, 0.4);
+
+  --scrim: rgba(0, 0, 0, 0.6);
+  --shadow-nav: 0 -2px 12px rgba(0, 0, 0, 0.5);
+
+  color-scheme: dark;
+}
+
+[data-theme='serika'] {
+  --pink-50: #f0eae6;
+  --pink-100: #e9e4e0;
+  --pink-200: #ddd5ce;
+  --pink-300: #e9ad72;
+  --pink-400: #e29a5c;
+  --pink-500: #d68748;
+  --pink-600: #b06a35;
+
+  --bg-canvas: #e9e4e0;
+  --bg-card: #f5f1ee;
+  --bg-surface: #efe9e4;
+
+  --text-primary: #54495a;
+  --text-secondary: #8a7e93;
+  --text-tertiary: #b0a6b8;
+  --text-on-pink: #ffffff;
+
+  --correct: #6fae6f;
+  --wrong: #d36a6a;
+  --streak: #e07b4a;
+  --xp-gold: #d4a83a;
+
+  --star-gold: #d4a83a;
+  --star-silver: #b9b9b9;
+  --star-bronze: #b07543;
+  --star-empty: #d8d2cc;
+
+  --world-1: #e9ad72;
+  --world-2: #d98e5a;
+  --world-3: #7bb480;
+  --world-4: #a98bc4;
+  --world-5: #d36a6a;
+  --world-6: #6a9fc4;
+  --world-7: #c47398;
+  --world-8: #6a6ac4;
+
+  --node-gold-gradient: linear-gradient(135deg, #d4a83a, #b88a2a);
+  --node-played-gradient: linear-gradient(135deg, #6a9fc4, #4070a0);
+  --node-unlocked: #ddd5ce;
+  --node-locked: #cfc7bf;
+
+  --shadow-btn-primary: 0 6px 0 #b06a35;
+  --shadow-btn-success: 0 6px 0 #4e8a4e;
+  --shadow-btn-info: 0 6px 0 #4070a0;
+  --shadow-sm: 0 2px 0 0 rgba(84, 73, 90, 0.1);
+  --shadow-md: 0 4px 0 0 rgba(84, 73, 90, 0.12);
+  --shadow-lg: 0 6px 0 0 rgba(84, 73, 90, 0.15);
+  --glow-primary: 0 0 20px rgba(233, 173, 114, 0.4);
+  --glow-gold: 0 0 20px rgba(212, 168, 58, 0.45);
+
+  --scrim: rgba(84, 73, 90, 0.35);
+  --shadow-nav: 0 -2px 8px rgba(84, 73, 90, 0.08);
+
+  color-scheme: light;
+}
+
+[data-theme='serika-dark'] {
+  --pink-50: #2b2724;
+  --pink-100: #35302c;
+  --pink-200: #463e38;
+  --pink-300: #e9ad72;
+  --pink-400: #f0b884;
+  --pink-500: #f5c696;
+  --pink-600: #c8956a;
+
+  --bg-canvas: #252321;
+  --bg-card: #2f2c29;
+  --bg-surface: #36322e;
+
+  --text-primary: #d6cfc9;
+  --text-secondary: #a89e95;
+  --text-tertiary: #80776f;
+  --text-on-pink: #252321;
+
+  --correct: #8fc488;
+  --wrong: #e57b7b;
+  --streak: #e89060;
+  --xp-gold: #e9c46a;
+
+  --star-gold: #e9c46a;
+  --star-silver: #c9c2bc;
+  --star-bronze: #c89060;
+  --star-empty: #4a443f;
+
+  --world-1: #e9ad72;
+  --world-2: #d98e5a;
+  --world-3: #7bb480;
+  --world-4: #a98bc4;
+  --world-5: #d36a6a;
+  --world-6: #6a9fc4;
+  --world-7: #c47398;
+  --world-8: #6a6ac4;
+
+  --node-gold-gradient: linear-gradient(135deg, #e9c46a, #c89a3a);
+  --node-played-gradient: linear-gradient(135deg, #6a9fc4, #4070a0);
+  --node-unlocked: #463e38;
+  --node-locked: #35302c;
+
+  --shadow-btn-primary: 0 6px 0 #b06a35;
+  --shadow-btn-success: 0 6px 0 #4e8a4e;
+  --shadow-btn-info: 0 6px 0 #4070a0;
+  --shadow-sm: 0 2px 0 0 rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 0 0 rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 6px 0 0 rgba(0, 0, 0, 0.5);
+  --glow-primary: 0 0 20px rgba(233, 173, 114, 0.35);
+  --glow-gold: 0 0 20px rgba(233, 196, 106, 0.4);
+
+  --scrim: rgba(0, 0, 0, 0.55);
+  --shadow-nav: 0 -2px 12px rgba(0, 0, 0, 0.45);
+
+  color-scheme: dark;
+}
+
+[data-theme='nord'] {
+  --pink-50: #2e3440;
+  --pink-100: #3b4252;
+  --pink-200: #434c5e;
+  --pink-300: #88c0d0;
+  --pink-400: #8ecbdc;
+  --pink-500: #9bd4e6;
+  --pink-600: #6fa3b8;
+
+  --bg-canvas: #2e3440;
+  --bg-card: #3b4252;
+  --bg-surface: #434c5e;
+
+  --text-primary: #eceff4;
+  --text-secondary: #d8dee9;
+  --text-tertiary: #9aa4b3;
+  --text-on-pink: #2e3440;
+
+  --correct: #a3be8c;
+  --wrong: #bf616a;
+  --streak: #d08770;
+  --xp-gold: #ebcb8b;
+
+  --star-gold: #ebcb8b;
+  --star-silver: #cdd3de;
+  --star-bronze: #d08770;
+  --star-empty: #4c566a;
+
+  --world-1: #88c0d0;
+  --world-2: #d08770;
+  --world-3: #a3be8c;
+  --world-4: #b48ead;
+  --world-5: #bf616a;
+  --world-6: #81a1c1;
+  --world-7: #8fbcbb;
+  --world-8: #5e81ac;
+
+  --node-gold-gradient: linear-gradient(135deg, #ebcb8b, #d4b06a);
+  --node-played-gradient: linear-gradient(135deg, #81a1c1, #5e81ac);
+  --node-unlocked: #4c566a;
+  --node-locked: #3b4252;
+
+  --shadow-btn-primary: 0 6px 0 #6fa3b8;
+  --shadow-btn-success: 0 6px 0 #7a9a6a;
+  --shadow-btn-info: 0 6px 0 #5e81ac;
+  --shadow-sm: 0 2px 0 0 rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 0 0 rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 6px 0 0 rgba(0, 0, 0, 0.5);
+  --glow-primary: 0 0 20px rgba(136, 192, 208, 0.35);
+  --glow-gold: 0 0 20px rgba(235, 203, 139, 0.4);
+
+  --scrim: rgba(0, 0, 0, 0.55);
+  --shadow-nav: 0 -2px 12px rgba(0, 0, 0, 0.45);
+
+  color-scheme: dark;
+}
+
+[data-theme='gruvbox-dark'] {
+  --pink-50: #282828;
+  --pink-100: #32302b;
+  --pink-200: #3c3836;
+  --pink-300: #fabd2f;
+  --pink-400: #fac83f;
+  --pink-500: #fbd24f;
+  --pink-600: #d4a017;
+
+  --bg-canvas: #282828;
+  --bg-card: #32302b;
+  --bg-surface: #3c3836;
+
+  --text-primary: #ebdbb2;
+  --text-secondary: #d5c4a1;
+  --text-tertiary: #a89984;
+  --text-on-pink: #282828;
+
+  --correct: #b8bb26;
+  --wrong: #fb4934;
+  --streak: #fe8019;
+  --xp-gold: #fabd2f;
+
+  --star-gold: #fabd2f;
+  --star-silver: #d5c4a1;
+  --star-bronze: #fe8019;
+  --star-empty: #504945;
+
+  --world-1: #fabd2f;
+  --world-2: #fe8019;
+  --world-3: #b8bb26;
+  --world-4: #d3869b;
+  --world-5: #fb4934;
+  --world-6: #83a598;
+  --world-7: #d3869b;
+  --world-8: #8ec07c;
+
+  --node-gold-gradient: linear-gradient(135deg, #fabd2f, #d4a017);
+  --node-played-gradient: linear-gradient(135deg, #83a598, #427b58);
+  --node-unlocked: #504945;
+  --node-locked: #3c3836;
+
+  --shadow-btn-primary: 0 6px 0 #c89c1a;
+  --shadow-btn-success: 0 6px 0 #89941a;
+  --shadow-btn-info: 0 6px 0 #427b58;
+  --shadow-sm: 0 2px 0 0 rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 0 0 rgba(0, 0, 0, 0.55);
+  --shadow-lg: 0 6px 0 0 rgba(0, 0, 0, 0.6);
+  --glow-primary: 0 0 20px rgba(250, 189, 47, 0.35);
+  --glow-gold: 0 0 20px rgba(250, 189, 47, 0.45);
+
+  --scrim: rgba(0, 0, 0, 0.6);
+  --shadow-nav: 0 -2px 12px rgba(0, 0, 0, 0.5);
+
+  color-scheme: dark;
+}
+
+[data-theme='dracula'] {
+  --pink-50: #282a36;
+  --pink-100: #343746;
+  --pink-200: #414550;
+  --pink-300: #bd93f9;
+  --pink-400: #c9a4fc;
+  --pink-500: #d6b5ff;
+  --pink-600: #9a73d4;
+
+  --bg-canvas: #282a36;
+  --bg-card: #343746;
+  --bg-surface: #44475a;
+
+  --text-primary: #f8f8f2;
+  --text-secondary: #c5c8d6;
+  --text-tertiary: #9094a8;
+  --text-on-pink: #282a36;
+
+  --correct: #50fa7b;
+  --wrong: #ff5555;
+  --streak: #ffb86c;
+  --xp-gold: #f1fa8c;
+
+  --star-gold: #f1fa8c;
+  --star-silver: #c5c8d6;
+  --star-bronze: #ffb86c;
+  --star-empty: #44475a;
+
+  --world-1: #bd93f9;
+  --world-2: #ffb86c;
+  --world-3: #50fa7b;
+  --world-4: #ff79c6;
+  --world-5: #ff5555;
+  --world-6: #8be9fd;
+  --world-7: #ff79c6;
+  --world-8: #6272a4;
+
+  --node-gold-gradient: linear-gradient(135deg, #f1fa8c, #d4d96a);
+  --node-played-gradient: linear-gradient(135deg, #8be9fd, #6272a4);
+  --node-unlocked: #44475a;
+  --node-locked: #343746;
+
+  --shadow-btn-primary: 0 6px 0 #9a73d4;
+  --shadow-btn-success: 0 6px 0 #3aa55a;
+  --shadow-btn-info: 0 6px 0 #6272a4;
+  --shadow-sm: 0 2px 0 0 rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 0 0 rgba(0, 0, 0, 0.55);
+  --shadow-lg: 0 6px 0 0 rgba(0, 0, 0, 0.6);
+  --glow-primary: 0 0 20px rgba(189, 147, 249, 0.35);
+  --glow-gold: 0 0 20px rgba(241, 250, 140, 0.4);
+
+  --scrim: rgba(0, 0, 0, 0.6);
+  --shadow-nav: 0 -2px 12px rgba(0, 0, 0, 0.5);
+
+  color-scheme: dark;
+}
+
+[data-theme='botanical'] {
+  --pink-50: #1d2b1f;
+  --pink-100: #243328;
+  --pink-200: #2d3d33;
+  --pink-300: #7bb480;
+  --pink-400: #8cc290;
+  --pink-500: #9dcfa0;
+  --pink-600: #5e9062;
+
+  --bg-canvas: #1d2b1f;
+  --bg-card: #243328;
+  --bg-surface: #2d3d33;
+
+  --text-primary: #cfdac9;
+  --text-secondary: #a8b8a3;
+  --text-tertiary: #7e8e7a;
+  --text-on-pink: #1d2b1f;
+
+  --correct: #8cc290;
+  --wrong: #c46a6a;
+  --streak: #d49a5a;
+  --xp-gold: #d8c46a;
+
+  --star-gold: #d8c46a;
+  --star-silver: #a8b8a3;
+  --star-bronze: #d49a5a;
+  --star-empty: #3a4a3a;
+
+  --world-1: #7bb480;
+  --world-2: #d49a5a;
+  --world-3: #8cc290;
+  --world-4: #a98bc4;
+  --world-5: #c46a6a;
+  --world-6: #6a9fc4;
+  --world-7: #c47398;
+  --world-8: #6a6ac4;
+
+  --node-gold-gradient: linear-gradient(135deg, #d8c46a, #b89a4a);
+  --node-played-gradient: linear-gradient(135deg, #6a9fc4, #4070a0);
+  --node-unlocked: #3a4a3a;
+  --node-locked: #2d3d33;
+
+  --shadow-btn-primary: 0 6px 0 #5e9062;
+  --shadow-btn-success: 0 6px 0 #4e8a4e;
+  --shadow-btn-info: 0 6px 0 #4070a0;
+  --shadow-sm: 0 2px 0 0 rgba(0, 0, 0, 0.45);
+  --shadow-md: 0 4px 0 0 rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 6px 0 0 rgba(0, 0, 0, 0.55);
+  --glow-primary: 0 0 20px rgba(123, 180, 128, 0.35);
+  --glow-gold: 0 0 20px rgba(216, 196, 106, 0.4);
+
+  --scrim: rgba(0, 0, 0, 0.55);
+  --shadow-nav: 0 -2px 12px rgba(0, 0, 0, 0.45);
+
+  color-scheme: dark;
+}
+
+[data-theme='mush'] {
+  --pink-50: #1c1b22;
+  --pink-100: #25232b;
+  --pink-200: #2e2b35;
+  --pink-300: #c0a3b3;
+  --pink-400: #ccb5c4;
+  --pink-500: #d8c7d5;
+  --pink-600: #9a7e8e;
+
+  --bg-canvas: #1c1b22;
+  --bg-card: #25232b;
+  --bg-surface: #2e2b35;
+
+  --text-primary: #dcd6df;
+  --text-secondary: #b5aec0;
+  --text-tertiary: #8a8495;
+  --text-on-pink: #1c1b22;
+
+  --correct: #a0c4a8;
+  --wrong: #c4858d;
+  --streak: #c89a7a;
+  --xp-gold: #d8c98a;
+
+  --star-gold: #d8c98a;
+  --star-silver: #b5aec0;
+  --star-bronze: #c89a7a;
+  --star-empty: #3a3640;
+
+  --world-1: #c0a3b3;
+  --world-2: #c89a7a;
+  --world-3: #a0c4a8;
+  --world-4: #a98bc4;
+  --world-5: #c4858d;
+  --world-6: #6a9fc4;
+  --world-7: #c47398;
+  --world-8: #6a6ac4;
+
+  --node-gold-gradient: linear-gradient(135deg, #d8c98a, #b89a5a);
+  --node-played-gradient: linear-gradient(135deg, #6a9fc4, #4070a0);
+  --node-unlocked: #3a3640;
+  --node-locked: #2e2b35;
+
+  --shadow-btn-primary: 0 6px 0 #9a7e8e;
+  --shadow-btn-success: 0 6px 0 #5a8a6a;
+  --shadow-btn-info: 0 6px 0 #4070a0;
+  --shadow-sm: 0 2px 0 0 rgba(0, 0, 0, 0.45);
+  --shadow-md: 0 4px 0 0 rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 6px 0 0 rgba(0, 0, 0, 0.55);
+  --glow-primary: 0 0 20px rgba(192, 163, 179, 0.3);
+  --glow-gold: 0 0 20px rgba(216, 201, 138, 0.35);
+
+  --scrim: rgba(0, 0, 0, 0.55);
+  --shadow-nav: 0 -2px 12px rgba(0, 0, 0, 0.45);
+
+  color-scheme: dark;
+}
+
+[data-theme='ocean'] {
+  --pink-50: #0f1f2e;
+  --pink-100: #16293b;
+  --pink-200: #1d344a;
+  --pink-300: #5fb4ff;
+  --pink-400: #74c0ff;
+  --pink-500: #8accff;
+  --pink-600: #3a8fd4;
+
+  --bg-canvas: #0f1f2e;
+  --bg-card: #16293b;
+  --bg-surface: #1d344a;
+
+  --text-primary: #cfe3f5;
+  --text-secondary: #a3c0d8;
+  --text-tertiary: #7a99b5;
+  --text-on-pink: #0f1f2e;
+
+  --correct: #5fd4a0;
+  --wrong: #ff6b6b;
+  --streak: #ffa05f;
+  --xp-gold: #ffd85a;
+
+  --star-gold: #ffd85a;
+  --star-silver: #a3c0d8;
+  --star-bronze: #ffa05f;
+  --star-empty: #2a4a66;
+
+  --world-1: #5fb4ff;
+  --world-2: #ffa05f;
+  --world-3: #5fd4a0;
+  --world-4: #a98bc4;
+  --world-5: #ff6b6b;
+  --world-6: #74c0ff;
+  --world-7: #c47398;
+  --world-8: #3a8fd4;
+
+  --node-gold-gradient: linear-gradient(135deg, #ffd85a, #d4a83a);
+  --node-played-gradient: linear-gradient(135deg, #74c0ff, #3a8fd4);
+  --node-unlocked: #2a4a66;
+  --node-locked: #1d344a;
+
+  --shadow-btn-primary: 0 6px 0 #3a8fd4;
+  --shadow-btn-success: 0 6px 0 #3aa070;
+  --shadow-btn-info: 0 6px 0 #2a6ab0;
+  --shadow-sm: 0 2px 0 0 rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 0 0 rgba(0, 0, 0, 0.55);
+  --shadow-lg: 0 6px 0 0 rgba(0, 0, 0, 0.6);
+  --glow-primary: 0 0 20px rgba(95, 180, 255, 0.35);
+  --glow-gold: 0 0 20px rgba(255, 216, 90, 0.4);
+
+  --scrim: rgba(0, 0, 0, 0.6);
+  --shadow-nav: 0 -2px 12px rgba(0, 0, 0, 0.5);
+
+  color-scheme: dark;
+}
+
+[data-theme='rose-dark'] {
+  --pink-50: #1d1419;
+  --pink-100: #261a21;
+  --pink-200: #322029;
+  --pink-300: #e5739b;
+  --pink-400: #ed84a8;
+  --pink-500: #f295b5;
+  --pink-600: #b85a7e;
+
+  --bg-canvas: #1d1419;
+  --bg-card: #261a21;
+  --bg-surface: #322029;
+
+  --text-primary: #f0d3de;
+  --text-secondary: #c7a8b8;
+  --text-tertiary: #9a8090;
+  --text-on-pink: #1d1419;
+
+  --correct: #7bc488;
+  --wrong: #e06a7a;
+  --streak: #e89a6a;
+  --xp-gold: #e9c46a;
+
+  --star-gold: #e9c46a;
+  --star-silver: #c7a8b8;
+  --star-bronze: #e89a6a;
+  --star-empty: #3a2a33;
+
+  --world-1: #e5739b;
+  --world-2: #e89a6a;
+  --world-3: #7bc488;
+  --world-4: #a98bc4;
+  --world-5: #e06a7a;
+  --world-6: #6a9fc4;
+  --world-7: #c47398;
+  --world-8: #7a6ac4;
+
+  --node-gold-gradient: linear-gradient(135deg, #e9c46a, #c89a4a);
+  --node-played-gradient: linear-gradient(135deg, #6a9fc4, #4070a0);
+  --node-unlocked: #3a2a33;
+  --node-locked: #322029;
+
+  --shadow-btn-primary: 0 6px 0 #b85a7e;
+  --shadow-btn-success: 0 6px 0 #4e8a5a;
+  --shadow-btn-info: 0 6px 0 #4070a0;
+  --shadow-sm: 0 2px 0 0 rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 0 0 rgba(0, 0, 0, 0.55);
+  --shadow-lg: 0 6px 0 0 rgba(0, 0, 0, 0.6);
+  --glow-primary: 0 0 20px rgba(229, 115, 155, 0.35);
+  --glow-gold: 0 0 20px rgba(233, 196, 106, 0.4);
+
+  --scrim: rgba(0, 0, 0, 0.6);
+  --shadow-nav: 0 -2px 12px rgba(0, 0, 0, 0.5);
+
+  color-scheme: dark;
+}
+
+[data-theme='cream'] {
+  --pink-50: #faf3e2;
+  --pink-100: #f5ecd9;
+  --pink-200: #ecdfc4;
+  --pink-300: #d9a066;
+  --pink-400: #d4925a;
+  --pink-500: #cc8350;
+  --pink-600: #a8653e;
+
+  --bg-canvas: #f5ecd9;
+  --bg-card: #fbf5e8;
+  --bg-surface: #f0e6cf;
+
+  --text-primary: #5a4a33;
+  --text-secondary: #8a7558;
+  --text-tertiary: #b09a78;
+  --text-on-pink: #ffffff;
+
+  --correct: #6fae6f;
+  --wrong: #d36a6a;
+  --streak: #e0854a;
+  --xp-gold: #d4a83a;
+
+  --star-gold: #d4a83a;
+  --star-silver: #b9b9b9;
+  --star-bronze: #b07543;
+  --star-empty: #ddcfb4;
+
+  --world-1: #d9a066;
+  --world-2: #d9854a;
+  --world-3: #7bb480;
+  --world-4: #a98bc4;
+  --world-5: #d36a6a;
+  --world-6: #6a9fc4;
+  --world-7: #c47398;
+  --world-8: #8a7ec4;
+
+  --node-gold-gradient: linear-gradient(135deg, #d4a83a, #b88a2a);
+  --node-played-gradient: linear-gradient(135deg, #6a9fc4, #4070a0);
+  --node-unlocked: #ecdfc4;
+  --node-locked: #ddd0b8;
+
+  --shadow-btn-primary: 0 6px 0 #a8653e;
+  --shadow-btn-success: 0 6px 0 #4e8a4e;
+  --shadow-btn-info: 0 6px 0 #4070a0;
+  --shadow-sm: 0 2px 0 0 rgba(90, 74, 51, 0.1);
+  --shadow-md: 0 4px 0 0 rgba(90, 74, 51, 0.12);
+  --shadow-lg: 0 6px 0 0 rgba(90, 74, 51, 0.15);
+  --glow-primary: 0 0 20px rgba(217, 160, 102, 0.4);
+  --glow-gold: 0 0 20px rgba(212, 168, 58, 0.45);
+
+  --scrim: rgba(90, 74, 51, 0.35);
+  --shadow-nav: 0 -2px 8px rgba(90, 74, 51, 0.08);
+
+  color-scheme: light;
+}
+
+[data-theme='mint'] {
+  --pink-50: #f0f8f3;
+  --pink-100: #eef7f1;
+  --pink-200: #dceee2;
+  --pink-300: #5cb88a;
+  --pink-400: #4aa878;
+  --pink-500: #3e9868;
+  --pink-600: #2e7a52;
+
+  --bg-canvas: #eef7f1;
+  --bg-card: #f6fbf7;
+  --bg-surface: #e4f1e9;
+
+  --text-primary: #234a38;
+  --text-secondary: #5a7a68;
+  --text-tertiary: #8aa898;
+  --text-on-pink: #ffffff;
+
+  --correct: #4aa878;
+  --wrong: #d36a6a;
+  --streak: #e0854a;
+  --xp-gold: #d4a83a;
+
+  --star-gold: #d4a83a;
+  --star-silver: #b9c4be;
+  --star-bronze: #b07543;
+  --star-empty: #cee0d6;
+
+  --world-1: #5cb88a;
+  --world-2: #e0854a;
+  --world-3: #4aa878;
+  --world-4: #a98bc4;
+  --world-5: #d36a6a;
+  --world-6: #6a9fc4;
+  --world-7: #c47398;
+  --world-8: #6a7ac4;
+
+  --node-gold-gradient: linear-gradient(135deg, #d4a83a, #b88a2a);
+  --node-played-gradient: linear-gradient(135deg, #6a9fc4, #4070a0);
+  --node-unlocked: #dceee2;
+  --node-locked: #c8e0d2;
+
+  --shadow-btn-primary: 0 6px 0 #2e7a52;
+  --shadow-btn-success: 0 6px 0 #3a8a5e;
+  --shadow-btn-info: 0 6px 0 #4070a0;
+  --shadow-sm: 0 2px 0 0 rgba(35, 74, 56, 0.1);
+  --shadow-md: 0 4px 0 0 rgba(35, 74, 56, 0.12);
+  --shadow-lg: 0 6px 0 0 rgba(35, 74, 56, 0.15);
+  --glow-primary: 0 0 20px rgba(92, 184, 138, 0.4);
+  --glow-gold: 0 0 20px rgba(212, 168, 58, 0.45);
+
+  --scrim: rgba(35, 74, 56, 0.3);
+  --shadow-nav: 0 -2px 8px rgba(35, 74, 56, 0.08);
+
+  color-scheme: light;
+}
+
+[data-theme='sky'] {
+  --pink-50: #f2f7fc;
+  --pink-100: #e9f3fb;
+  --pink-200: #d6e8f5;
+  --pink-300: #5aa3d9;
+  --pink-400: #4a93cc;
+  --pink-500: #3e84bf;
+  --pink-600: #2e6a9e;
+
+  --bg-canvas: #e9f3fb;
+  --bg-card: #f4f9fd;
+  --bg-surface: #dceaf5;
+
+  --text-primary: #1f3b52;
+  --text-secondary: #4a6a85;
+  --text-tertiary: #7a9ab0;
+  --text-on-pink: #ffffff;
+
+  --correct: #5cb88a;
+  --wrong: #d36a6a;
+  --streak: #e0854a;
+  --xp-gold: #d4a83a;
+
+  --star-gold: #d4a83a;
+  --star-silver: #b9c4d0;
+  --star-bronze: #b07543;
+  --star-empty: #ccdfec;
+
+  --world-1: #5aa3d9;
+  --world-2: #e0854a;
+  --world-3: #5cb88a;
+  --world-4: #a98bc4;
+  --world-5: #d36a6a;
+  --world-6: #4a93cc;
+  --world-7: #c47398;
+  --world-8: #6a7ac4;
+
+  --node-gold-gradient: linear-gradient(135deg, #d4a83a, #b88a2a);
+  --node-played-gradient: linear-gradient(135deg, #4a93cc, #2e6a9e);
+  --node-unlocked: #d6e8f5;
+  --node-locked: #c2d8ea;
+
+  --shadow-btn-primary: 0 6px 0 #2e6a9e;
+  --shadow-btn-success: 0 6px 0 #4e8a4e;
+  --shadow-btn-info: 0 6px 0 #2e6a9e;
+  --shadow-sm: 0 2px 0 0 rgba(31, 59, 82, 0.1);
+  --shadow-md: 0 4px 0 0 rgba(31, 59, 82, 0.12);
+  --shadow-lg: 0 6px 0 0 rgba(31, 59, 82, 0.15);
+  --glow-primary: 0 0 20px rgba(90, 163, 217, 0.4);
+  --glow-gold: 0 0 20px rgba(212, 168, 58, 0.45);
+
+  --scrim: rgba(31, 59, 82, 0.3);
+  --shadow-nav: 0 -2px 8px rgba(31, 59, 82, 0.08);
+
+  color-scheme: light;
+}
+
+[data-theme='lavender'] {
+  --pink-50: #f6f1fb;
+  --pink-100: #f1ecf7;
+  --pink-200: #e4dcef;
+  --pink-300: #9a7ed4;
+  --pink-400: #8a6ec8;
+  --pink-500: #7a5ebc;
+  --pink-600: #5e44a0;
+
+  --bg-canvas: #f1ecf7;
+  --bg-card: #f8f4fc;
+  --bg-surface: #e8e0f2;
+
+  --text-primary: #3d2f5a;
+  --text-secondary: #6a5a85;
+  --text-tertiary: #9a8ab0;
+  --text-on-pink: #ffffff;
+
+  --correct: #5cb88a;
+  --wrong: #d36a6a;
+  --streak: #e0854a;
+  --xp-gold: #d4a83a;
+
+  --star-gold: #d4a83a;
+  --star-silver: #c4bccf;
+  --star-bronze: #b07543;
+  --star-empty: #d8cee6;
+
+  --world-1: #9a7ed4;
+  --world-2: #e0854a;
+  --world-3: #5cb88a;
+  --world-4: #7a5ebc;
+  --world-5: #d36a6a;
+  --world-6: #6a9fc4;
+  --world-7: #c47398;
+  --world-8: #5a6ac4;
+
+  --node-gold-gradient: linear-gradient(135deg, #d4a83a, #b88a2a);
+  --node-played-gradient: linear-gradient(135deg, #6a9fc4, #4070a0);
+  --node-unlocked: #e4dcef;
+  --node-locked: #d2c6e2;
+
+  --shadow-btn-primary: 0 6px 0 #5e44a0;
+  --shadow-btn-success: 0 6px 0 #4e8a4e;
+  --shadow-btn-info: 0 6px 0 #4070a0;
+  --shadow-sm: 0 2px 0 0 rgba(61, 47, 90, 0.1);
+  --shadow-md: 0 4px 0 0 rgba(61, 47, 90, 0.12);
+  --shadow-lg: 0 6px 0 0 rgba(61, 47, 90, 0.15);
+  --glow-primary: 0 0 20px rgba(154, 126, 212, 0.4);
+  --glow-gold: 0 0 20px rgba(212, 168, 58, 0.45);
+
+  --scrim: rgba(61, 47, 90, 0.3);
+  --shadow-nav: 0 -2px 8px rgba(61, 47, 90, 0.08);
+
+  color-scheme: light;
+}
+
+[data-theme='cobalt'] {
+  --pink-50: #0a1a33;
+  --pink-100: #102240;
+  --pink-200: #183056;
+  --pink-300: #4a8fdb;
+  --pink-400: #5e9fe8;
+  --pink-500: #72afee;
+  --pink-600: #3670a8;
+
+  --bg-canvas: #0a1a33;
+  --bg-card: #102240;
+  --bg-surface: #183056;
+
+  --text-primary: #d4e4f5;
+  --text-secondary: #a0b8d0;
+  --text-tertiary: #6a8aa8;
+  --text-on-pink: #0a1a33;
+
+  --correct: #5fd49a;
+  --wrong: #ff6b6b;
+  --streak: #ffa05f;
+  --xp-gold: #ffd85a;
+
+  --star-gold: #ffd85a;
+  --star-silver: #a0b8d0;
+  --star-bronze: #ffa05f;
+  --star-empty: #1f3a5e;
+
+  --world-1: #4a8fdb;
+  --world-2: #ffa05f;
+  --world-3: #5fd49a;
+  --world-4: #a98bc4;
+  --world-5: #ff6b6b;
+  --world-6: #5e9fe8;
+  --world-7: #c47398;
+  --world-8: #3670a8;
+
+  --node-gold-gradient: linear-gradient(135deg, #ffd85a, #d4a83a);
+  --node-played-gradient: linear-gradient(135deg, #5e9fe8, #3670a8);
+  --node-unlocked: #1f3a5e;
+  --node-locked: #183056;
+
+  --shadow-btn-primary: 0 6px 0 #3670a8;
+  --shadow-btn-success: 0 6px 0 #3aa070;
+  --shadow-btn-info: 0 6px 0 #2a5a8a;
+  --shadow-sm: 0 2px 0 0 rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 0 0 rgba(0, 0, 0, 0.55);
+  --shadow-lg: 0 6px 0 0 rgba(0, 0, 0, 0.6);
+  --glow-primary: 0 0 20px rgba(74, 143, 219, 0.35);
+  --glow-gold: 0 0 20px rgba(255, 216, 90, 0.4);
+
+  --scrim: rgba(0, 0, 0, 0.6);
+  --shadow-nav: 0 -2px 12px rgba(0, 0, 0, 0.5);
+
+  color-scheme: dark;
+}
+
+[data-theme='matrix'] {
+  --pink-50: #0a0f0a;
+  --pink-100: #101810;
+  --pink-200: #162216;
+  --pink-300: #5fd46a;
+  --pink-400: #6fe078;
+  --pink-500: #80ea8a;
+  --pink-600: #3aa848;
+
+  --bg-canvas: #0a0f0a;
+  --bg-card: #101810;
+  --bg-surface: #162216;
+
+  --text-primary: #c8e6c8;
+  --text-secondary: #90b890;
+  --text-tertiary: #5a8a5a;
+  --text-on-pink: #0a0f0a;
+
+  --correct: #5fd46a;
+  --wrong: #d36a6a;
+  --streak: #d4a83a;
+  --xp-gold: #d4d83a;
+
+  --star-gold: #d4d83a;
+  --star-silver: #90b890;
+  --star-bronze: #5fd46a;
+  --star-empty: #1a2a1a;
+
+  --world-1: #5fd46a;
+  --world-2: #d4a83a;
+  --world-3: #80ea8a;
+  --world-4: #a8c4a8;
+  --world-5: #d36a6a;
+  --world-6: #5a9fc4;
+  --world-7: #c4a8d4;
+  --world-8: #3aa848;
+
+  --node-gold-gradient: linear-gradient(135deg, #d4d83a, #a8a82a);
+  --node-played-gradient: linear-gradient(135deg, #5fd46a, #3aa848);
+  --node-unlocked: #1a2a1a;
+  --node-locked: #162216;
+
+  --shadow-btn-primary: 0 6px 0 #3aa848;
+  --shadow-btn-success: 0 6px 0 #2a8a38;
+  --shadow-btn-info: 0 6px 0 #2a6a4a;
+  --shadow-sm: 0 2px 0 0 rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 0 0 rgba(0, 0, 0, 0.55);
+  --shadow-lg: 0 6px 0 0 rgba(0, 0, 0, 0.6);
+  --glow-primary: 0 0 20px rgba(95, 212, 106, 0.35);
+  --glow-gold: 0 0 20px rgba(212, 216, 58, 0.4);
+
+  --scrim: rgba(0, 0, 0, 0.65);
+  --shadow-nav: 0 -2px 12px rgba(0, 0, 0, 0.55);
+
+  color-scheme: dark;
+}
+
+[data-theme='sunset-dark'] {
+  --pink-50: #1f1310;
+  --pink-100: #2a1c16;
+  --pink-200: #38251d;
+  --pink-300: #f08a4a;
+  --pink-400: #f59a5e;
+  --pink-500: #f9aa72;
+  --pink-600: #c4683a;
+
+  --bg-canvas: #1f1310;
+  --bg-card: #2a1c16;
+  --bg-surface: #38251d;
+
+  --text-primary: #f0d4c0;
+  --text-secondary: #c4a890;
+  --text-tertiary: #9a8068;
+  --text-on-pink: #1f1310;
+
+  --correct: #8fc46a;
+  --wrong: #e56a5a;
+  --streak: #f08a4a;
+  --xp-gold: #f0c46a;
+
+  --star-gold: #f0c46a;
+  --star-silver: #c4a890;
+  --star-bronze: #f08a4a;
+  --star-empty: #4a2e22;
+
+  --world-1: #f08a4a;
+  --world-2: #e85a3a;
+  --world-3: #8fc46a;
+  --world-4: #c48ad4;
+  --world-5: #e56a5a;
+  --world-6: #6a9fc4;
+  --world-7: #d47398;
+  --world-8: #6a5ac4;
+
+  --node-gold-gradient: linear-gradient(135deg, #f0c46a, #c89a4a);
+  --node-played-gradient: linear-gradient(135deg, #6a9fc4, #4070a0);
+  --node-unlocked: #4a2e22;
+  --node-locked: #38251d;
+
+  --shadow-btn-primary: 0 6px 0 #c4683a;
+  --shadow-btn-success: 0 6px 0 #5a8a3a;
+  --shadow-btn-info: 0 6px 0 #4070a0;
+  --shadow-sm: 0 2px 0 0 rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 0 0 rgba(0, 0, 0, 0.55);
+  --shadow-lg: 0 6px 0 0 rgba(0, 0, 0, 0.6);
+  --glow-primary: 0 0 20px rgba(240, 138, 74, 0.35);
+  --glow-gold: 0 0 20px rgba(240, 196, 106, 0.4);
+
+  --scrim: rgba(0, 0, 0, 0.6);
+  --shadow-nav: 0 -2px 12px rgba(0, 0, 0, 0.5);
+
+  color-scheme: dark;
+}
+
+[data-theme='cosmic'] {
+  --pink-50: #15102b;
+  --pink-100: #1c1638;
+  --pink-200: #252048;
+  --pink-300: #b06fd4;
+  --pink-400: #c085e0;
+  --pink-500: #d09be8;
+  --pink-600: #8a52b0;
+
+  --bg-canvas: #15102b;
+  --bg-card: #1c1638;
+  --bg-surface: #252048;
+
+  --text-primary: #e0d4f0;
+  --text-secondary: #b0a0c8;
+  --text-tertiary: #8070a0;
+  --text-on-pink: #15102b;
+
+  --correct: #8fc46a;
+  --wrong: #e56a7a;
+  --streak: #f08a4a;
+  --xp-gold: #f0d46a;
+
+  --star-gold: #f0d46a;
+  --star-silver: #b0a0c8;
+  --star-bronze: #f08a4a;
+  --star-empty: #2e2a4a;
+
+  --world-1: #b06fd4;
+  --world-2: #f08a4a;
+  --world-3: #8fc46a;
+  --world-4: #d09be8;
+  --world-5: #e56a7a;
+  --world-6: #6a8fc4;
+  --world-7: #c47398;
+  --world-8: #5a6ad4;
+
+  --node-gold-gradient: linear-gradient(135deg, #f0d46a, #c89a4a);
+  --node-played-gradient: linear-gradient(135deg, #6a8fc4, #4060a0);
+  --node-unlocked: #2e2a4a;
+  --node-locked: #252048;
+
+  --shadow-btn-primary: 0 6px 0 #8a52b0;
+  --shadow-btn-success: 0 6px 0 #4e8a4e;
+  --shadow-btn-info: 0 6px 0 #4060a0;
+  --shadow-sm: 0 2px 0 0 rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 0 0 rgba(0, 0, 0, 0.55);
+  --shadow-lg: 0 6px 0 0 rgba(0, 0, 0, 0.6);
+  --glow-primary: 0 0 20px rgba(176, 111, 212, 0.35);
+  --glow-gold: 0 0 20px rgba(240, 212, 106, 0.4);
+
+  --scrim: rgba(0, 0, 0, 0.6);
+  --shadow-nav: 0 -2px 12px rgba(0, 0, 0, 0.5);
+
+  color-scheme: dark;
 }
 
 body {
@@ -170,6 +1209,10 @@ body {
   from { transform: translateY(100%); }
   to { transform: translateY(0); }
 }
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
 
 .animate-fade-up { animation: fade-up 0.4s ease-out both; }
 .animate-scale-in { animation: scale-in 0.35s ease-out both; }
@@ -183,6 +1226,19 @@ body {
 .animate-xp-float { animation: xp-float 1.2s ease-out both; }
 .animate-level-up { animation: level-up 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
 .animate-slide-up { animation: slide-up 0.3s ease-out both; }
+
+/* Skeleton placeholder — sweeping shimmer over surface tokens.
+   prefers-reduced-motion (below) freezes it to a static block. */
+.skeleton {
+  background-image: linear-gradient(
+    90deg,
+    var(--bg-surface) 25%,
+    var(--bg-card) 50%,
+    var(--bg-surface) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
