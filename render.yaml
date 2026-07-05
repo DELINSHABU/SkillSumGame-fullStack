@@ -1,0 +1,30 @@
+# Render Blueprint — SkillSum Hono API (free tier)
+# Docs: https://render.com/docs/blueprint-spec
+#
+# One web service running the Hono API from apps/api. Installs the whole
+# npm workspace from the repo root so `@skillsum/shared` resolves, then runs
+# Drizzle migrations and starts the server via tsx.
+#
+# The Postgres database is NOT defined here — use a free Neon project and paste
+# its connection string into the DATABASE_URL env var in the Render dashboard
+# (Render's own free Postgres expires after ~30 days; Neon's free tier is permanent).
+services:
+  - type: web
+    name: skillsum-api
+    runtime: node
+    plan: free
+    region: oregon
+    # `--include=dev` forces devDependencies (tsx, drizzle-kit) to install even
+    # though NODE_ENV=production — the API is run through tsx at runtime, and
+    # migrations need drizzle-kit. Then apply pending migrations (idempotent).
+    buildCommand: npm install --include=dev && npm run db:migrate --workspace apps/api
+    startCommand: npm start --workspace apps/api
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      # Enables `secure` session cookies (apps/api/src/routes/auth.ts).
+      - key: NODE_ENV
+        value: production
+      # Paste your Neon connection string here in the dashboard (kept out of git).
+      - key: DATABASE_URL
+        sync: false
