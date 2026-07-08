@@ -1,28 +1,22 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 import { ALL_LEVELS, getLevelById } from '@skillsum/shared';
-import { LoadingScreen } from '@/components/shared/LoadingScreen';
-import { api, type DailyState, type MasteryRow, type Me } from '@/lib/api';
+import { HomeSkeleton } from '@/components/shared/HomeSkeleton';
+import { api } from '@/lib/api';
+import { useResource } from '@/lib/cache';
+import { GameIcon } from '@/components/ui/GameIcon';
 
 export default function HomePage() {
-  const [me, setMe] = useState<Me | null>(null);
-  const [mastery, setMastery] = useState<MasteryRow[]>([]);
-  const [daily, setDaily] = useState<DailyState | null>(null);
+  const { data: me } = useResource('auth/me', () => api.auth.me());
+  const { data: mastery } = useResource('mastery', () => api.mastery.list());
+  const { data: daily } = useResource('daily', () => api.daily.get());
 
-  useEffect(() => {
-    void Promise.all([api.auth.me(), api.mastery.list(), api.daily.get()]).then(([meRes, masteryRes, dailyRes]) => {
-      setMe(meRes);
-      setMastery(masteryRes);
-      setDaily(dailyRes);
-    });
-  }, []);
+  if (!me || !daily) return <HomeSkeleton />;
 
-  if (!me || !daily) return <LoadingScreen />;
-
+  const masteryRows = mastery ?? [];
   // Continue point: first level not yet passed.
-  const passed = new Set(mastery.filter((m) => m.stars > 0).map((m) => m.levelId));
+  const passed = new Set(masteryRows.filter((m) => m.stars > 0).map((m) => m.levelId));
   const nextLevel = ALL_LEVELS.find((l) => !passed.has(l.id)) ?? getLevelById(400);
   const dailyDone = daily.tasks.filter((t) => daily.taskState[t.id]?.completed).length;
 
@@ -37,7 +31,7 @@ export default function HomePage() {
           className="flex items-center gap-1 rounded-full px-4 py-2 font-bold"
           style={{ backgroundColor: 'var(--bg-card)', boxShadow: 'var(--shadow-sm)', color: 'var(--streak)' }}
         >
-          <span className="animate-flicker">🔥</span> {me.dailyStreak}
+          <span className="animate-flicker"><GameIcon emoji="🔥" /></span> {me.dailyStreak}
         </div>
       </header>
 
@@ -84,7 +78,7 @@ export default function HomePage() {
             <div>
               <div className="font-bold" style={{ fontFamily: 'var(--font-display)' }}>Daily Challenges</div>
               <div className="text-sm" style={{ color: 'var(--text-secondary)' }}>
-                {dailyDone}/3 complete · {daily.xpRewarded ? 'Reward claimed ✅' : `${daily.xpReward.toLocaleString()} XP reward`}
+                {dailyDone}/3 complete · {daily.xpRewarded ? 'Reward claimed <GameIcon emoji="✅" />' : `${daily.xpReward.toLocaleString()} XP reward`}
               </div>
             </div>
           </div>
@@ -120,7 +114,7 @@ export default function HomePage() {
         <div className="font-bold mb-2" style={{ fontFamily: 'var(--font-display)' }}>Your Journey</div>
         <div className="flex justify-between text-sm" style={{ color: 'var(--text-secondary)' }}>
           <span>{passed.size}/400 levels</span>
-          <span>⭐ {mastery.reduce((sum, m) => sum + m.stars, 0)}</span>
+          <span>⭐ {masteryRows.reduce((sum, m) => sum + m.stars, 0)}</span>
         </div>
         <div className="h-2 rounded-full mt-2" style={{ backgroundColor: 'var(--bg-surface)' }}>
           <div

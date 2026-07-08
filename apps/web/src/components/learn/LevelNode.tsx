@@ -2,6 +2,7 @@
 
 import type { Level, StarCount } from '@skillsum/shared';
 import { cn } from '@/lib/utils';
+import { GameIcon } from '@/components/ui/GameIcon';
 
 export type LevelNodeState = 'locked' | 'current' | 'unlocked' | 'bronze' | 'silver' | 'gold';
 
@@ -55,7 +56,7 @@ export function LevelNode({ level, stars, state, onSelect }: LevelNodeProps) {
           fontSize: isBoss ? '1.3rem' : '1.1rem',
         }}
       >
-        {state === 'locked' ? '🔒' : isBoss ? '👑' : local}
+        {state === 'locked' ? <GameIcon emoji="🔒" /> : isBoss ? <GameIcon emoji="👑" /> : local}
       </button>
       <span className="text-[10px] text-center leading-tight" style={{ color: 'var(--text-tertiary)' }}>
         {level.title.length > 22 ? `${level.title.slice(0, 20)}…` : level.title}

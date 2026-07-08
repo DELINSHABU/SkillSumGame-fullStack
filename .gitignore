@@ -7,3 +7,15 @@ dist/
 coverage/
 playwright-report/
 test-results/
+
+# Generated analysis output — never commit
+graphify-out/
+.commandcode/
+
+# Icon source dumps (canonical copies live in apps/web/public/icons)
+svg_icons/
+
+# Serwist build artifacts
+apps/web/public/sw.js
+apps/web/public/sw.js.map
+apps/web/public/swe-worker*.js

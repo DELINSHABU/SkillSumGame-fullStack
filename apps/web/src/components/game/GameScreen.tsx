@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { generateQuestion, type GenerationParams, type Question, type QuestionAttempt } from '@skillsum/shared';
 import { Numpad } from './Numpad';
 import { StarProgressBar } from './StarProgressBar';
+import { GameIcon } from '@/components/ui/GameIcon';
 
 export interface GameEndResult {
   attempts: QuestionAttempt[];
@@ -134,7 +135,7 @@ export function GameScreen({
         <div className="flex items-center gap-4">
           {streak >= 3 && (
             <span className="font-bold animate-flicker" style={{ color: 'var(--streak)' }}>
-              🔥{streak}
+              <GameIcon emoji="🔥" />{streak}
             </span>
           )}
           <span className="text-stat" style={{ color: 'var(--text-primary)' }}>

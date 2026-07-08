@@ -1,18 +1,14 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { WorldSelectGrid } from '@/components/learn/WorldSelectGrid';
-import { LoadingScreen } from '@/components/shared/LoadingScreen';
-import { api, type MasteryRow } from '@/lib/api';
+import { WorldSelectSkeleton } from '@/components/learn/WorldSelectSkeleton';
+import { api } from '@/lib/api';
+import { useResource } from '@/lib/cache';
 
 export default function LearnPage() {
-  const [mastery, setMastery] = useState<MasteryRow[] | null>(null);
+  const { data: mastery } = useResource('mastery', () => api.mastery.list());
 
-  useEffect(() => {
-    void api.mastery.list().then(setMastery);
-  }, []);
-
-  if (!mastery) return <LoadingScreen message="Loading worlds…" />;
+  if (!mastery) return <WorldSelectSkeleton />;
 
   return (
     <div className="flex flex-col gap-6">

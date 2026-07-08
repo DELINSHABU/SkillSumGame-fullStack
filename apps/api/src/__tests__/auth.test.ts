@@ -27,11 +27,43 @@ describe('auth flow', () => {
     const { sid } = await signup(app);
     const res = await app.request('/api/auth/me', { headers: cookieHeader(sid) });
     expect(res.status).toBe(200);
-    const body = await json<{ email: string; xp: number; accountLevel: number; dailyStreak: number }>(res);
+    const body = await json<{
+      email: string;
+      xp: number;
+      accountLevel: number;
+      dailyStreak: number;
+      theme: string;
+    }>(res);
     expect(body.email).toBe(TEST_USER.email);
     expect(body.xp).toBe(0);
     expect(body.accountLevel).toBe(1);
     expect(body.dailyStreak).toBe(0);
+    expect(body.theme).toBe('system');
+  });
+
+  it('theme preference: PATCH persists and is returned by /profile and /me; invalid → 400', async () => {
+    const { sid } = await signup(app);
+
+    const patched = await app.request('/api/profile', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', ...cookieHeader(sid) },
+      body: JSON.stringify({ theme: 'nord' }),
+    });
+    expect(patched.status).toBe(200);
+    expect((await json<{ theme: string }>(patched)).theme).toBe('nord');
+
+    const profile = await app.request('/api/profile', { headers: cookieHeader(sid) });
+    expect((await json<{ theme: string }>(profile)).theme).toBe('nord');
+
+    const me = await app.request('/api/auth/me', { headers: cookieHeader(sid) });
+    expect((await json<{ theme: string }>(me)).theme).toBe('nord');
+
+    const bad = await app.request('/api/profile', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', ...cookieHeader(sid) },
+      body: JSON.stringify({ theme: 'neon' }),
+    });
+    expect(bad.status).toBe(400);
   });
 
   it('duplicate email → 409; duplicate username → 409', async () => {

@@ -1,12 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { configKey, type PracticeConfig, type QuestionAttempt } from '@skillsum/shared';
 import { GameScreen, type GameEndResult } from '@/components/game/GameScreen';
 import { PracticeConfigurator } from '@/components/practice/PracticeConfigurator';
 import { PracticeResults } from '@/components/practice/PracticeResults';
 import { LoadingScreen } from '@/components/shared/LoadingScreen';
-import { api, type PersonalBestRow, type SessionSaveResult } from '@/lib/api';
+import { api, type SessionSaveResult } from '@/lib/api';
+import { invalidate, useResource } from '@/lib/cache';
 
 type Phase = 'configure' | 'playing' | 'saving' | 'results';
 
@@ -20,18 +21,18 @@ const DEFAULT_CONFIG: PracticeConfig = {
 export default function PracticePage() {
   const [phase, setPhase] = useState<Phase>('configure');
   const [config, setConfig] = useState<PracticeConfig>(DEFAULT_CONFIG);
-  const [personalBests, setPersonalBests] = useState<PersonalBestRow[]>([]);
   const [result, setResult] = useState<SessionSaveResult | null>(null);
   const [lastAttempts, setLastAttempts] = useState<QuestionAttempt[]>([]);
   const [lastDuration, setLastDuration] = useState(0);
   const [saveError, setSaveError] = useState(false);
   const [pendingEnd, setPendingEnd] = useState<GameEndResult | null>(null);
 
-  useEffect(() => {
-    void api.sessions.personalBests().then(setPersonalBests);
-  }, []);
+  const { data: personalBests, refetch: refetchPersonalBests } = useResource(
+    'sessions/personal-bests',
+    () => api.sessions.personalBests()
+  );
 
-  const currentPb = personalBests.find((pb) => pb.configKey === configKey(config))?.score ?? null;
+  const currentPb = (personalBests ?? []).find((pb) => pb.configKey === configKey(config))?.score ?? null;
 
   const save = async (end: GameEndResult) => {
     setPhase('saving');
@@ -49,7 +50,11 @@ export default function PracticePage() {
       setLastAttempts(end.attempts);
       setLastDuration(end.durationMs);
       setPhase('results');
-      void api.sessions.personalBests().then(setPersonalBests);
+      // XP/profile changed; refresh personal bests, drop other stale reads.
+      invalidate('mastery');
+      invalidate('profile');
+      invalidate('auth/me');
+      void refetchPersonalBests();
     } catch {
       setSaveError(true);
     }

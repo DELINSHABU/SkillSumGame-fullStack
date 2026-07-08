@@ -1,39 +1,28 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { LoadingScreen } from '@/components/shared/LoadingScreen';
+import { useState } from 'react';
 import { AchievementsGrid } from '@/components/profile/AchievementsGrid';
 import { HistoryList } from '@/components/profile/HistoryList';
+import { ProfileSkeleton } from '@/components/profile/ProfileSkeleton';
 import { StatsPanel } from '@/components/profile/StatsPanel';
-import { api, type AchievementRow, type FullProfile, type GameSessionRow, type MasteryRow } from '@/lib/api';
+import { ThemeToggle } from '@/components/profile/ThemeToggle';
+import { api } from '@/lib/api';
+import { invalidate, useResource } from '@/lib/cache';
 import { cn } from '@/lib/utils';
+import { GameIcon } from '@/components/ui/GameIcon';
 
 type Tab = 'stats' | 'achievements' | 'history';
 
 export default function ProfilePage() {
   const router = useRouter();
-  const [profile, setProfile] = useState<FullProfile | null>(null);
-  const [achievements, setAchievements] = useState<AchievementRow[]>([]);
-  const [history, setHistory] = useState<GameSessionRow[]>([]);
-  const [mastery, setMastery] = useState<MasteryRow[]>([]);
+  const { data: profile } = useResource('profile', () => api.profile.get());
+  const { data: achievements } = useResource('achievements', () => api.achievements.list());
+  const { data: history } = useResource('sessions?limit=20', () => api.sessions.history({ limit: 20 }));
+  const { data: mastery } = useResource('mastery', () => api.mastery.list());
   const [tab, setTab] = useState<Tab>('stats');
 
-  useEffect(() => {
-    void Promise.all([
-      api.profile.get(),
-      api.achievements.list(),
-      api.sessions.history({ limit: 20 }),
-      api.mastery.list(),
-    ]).then(([p, a, h, m]) => {
-      setProfile(p);
-      setAchievements(a);
-      setHistory(h);
-      setMastery(m);
-    });
-  }, []);
-
-  if (!profile) return <LoadingScreen />;
+  if (!profile) return <ProfileSkeleton />;
 
   const xpIntoLevel = profile.xp - profile.xpForCurrentLevel;
   const xpForLevel = profile.xpForNextLevel - profile.xpForCurrentLevel;
@@ -41,6 +30,7 @@ export default function ProfilePage() {
 
   const logout = async () => {
     await api.auth.logout();
+    invalidate(''); // clear all cached account data for the next session
     router.push('/login');
     router.refresh();
   };
@@ -56,7 +46,7 @@ export default function ProfilePage() {
               {profile.username}
             </h1>
             <p className="text-sm opacity-90">
-              Level {profile.accountLevel} · 🔥 {profile.dailyStreak}-day streak
+              Level {profile.accountLevel} · <GameIcon emoji="🔥" /> {profile.dailyStreak}-day streak
             </p>
           </div>
         </div>
@@ -91,9 +81,11 @@ export default function ProfilePage() {
         ))}
       </div>
 
-      {tab === 'stats' && <StatsPanel profile={profile} mastery={mastery} />}
-      {tab === 'achievements' && <AchievementsGrid achievements={achievements} />}
-      {tab === 'history' && <HistoryList sessions={history} />}
+      {tab === 'stats' && <StatsPanel profile={profile} mastery={mastery ?? []} />}
+      {tab === 'achievements' && <AchievementsGrid achievements={achievements ?? []} />}
+      {tab === 'history' && <HistoryList sessions={history ?? []} />}
+
+      <ThemeToggle />
 
       <button
         type="button"

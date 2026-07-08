@@ -2,13 +2,14 @@
 
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { getLevelById } from '@skillsum/shared';
 import { GameScreen, type GameEndResult } from '@/components/game/GameScreen';
 import { PostLesson } from '@/components/learn/PostLesson';
 import { PreLesson } from '@/components/learn/PreLesson';
 import { LoadingScreen } from '@/components/shared/LoadingScreen';
-import { api, type MasteryRow, type SessionSaveResult } from '@/lib/api';
+import { api, type SessionSaveResult } from '@/lib/api';
+import { invalidate, useResource } from '@/lib/cache';
 
 type Phase = 'pre' | 'playing' | 'saving' | 'post';
 
@@ -17,17 +18,14 @@ export default function PlayLevelPage() {
   const level = getLevelById(Number(params.levelId));
 
   const [phase, setPhase] = useState<Phase>('pre');
-  const [mastery, setMastery] = useState<MasteryRow | undefined>();
   const [result, setResult] = useState<SessionSaveResult | null>(null);
   const [saveError, setSaveError] = useState(false);
   const [pendingEnd, setPendingEnd] = useState<GameEndResult | null>(null);
 
-  useEffect(() => {
-    if (!level) return;
-    void api.mastery
-      .list(level.worldId)
-      .then((rows) => setMastery(rows.find((m) => m.levelId === level.id)));
-  }, [level]);
+  const { data: masteryRows } = useResource(level ? `mastery?worldId=${level.worldId}` : null, () =>
+    api.mastery.list(level!.worldId)
+  );
+  const mastery = masteryRows?.find((m) => m.levelId === level?.id);
 
   if (!level) {
     return (
@@ -50,6 +48,11 @@ export default function PlayLevelPage() {
         durationMs: end.durationMs,
         localHour: new Date().getHours(),
       });
+      // Progress + XP changed server-side; drop stale reads so the next visit revalidates.
+      invalidate('mastery');
+      invalidate('profile');
+      invalidate('auth/me');
+      invalidate('sessions');
       setResult(saved);
       setPhase('post');
     } catch {

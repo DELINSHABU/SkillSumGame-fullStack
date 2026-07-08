@@ -2,6 +2,7 @@
 
 import type { AchievementRow } from '@/lib/api';
 import { formatDate } from '@/lib/utils';
+import { GameIcon } from '@/components/ui/GameIcon';
 
 interface AchievementsGridProps {
   achievements: AchievementRow[];
@@ -32,7 +33,7 @@ export function AchievementsGrid({ achievements }: AchievementsGridProps) {
               }}
             >
               <div className="text-3xl mb-1" style={{ filter: !unlocked && a.secret ? 'blur(4px)' : 'none' }}>
-                {a.secret && !unlocked ? '❓' : a.icon}
+                {a.secret && !unlocked ? <GameIcon emoji="❓" /> : <GameIcon emoji={a.icon} />}
               </div>
               <div className="font-bold text-sm" style={{ fontFamily: 'var(--font-display)' }}>{a.name}</div>
               <div className="text-xs" style={{ color: 'var(--text-secondary)' }}>{a.description}</div>

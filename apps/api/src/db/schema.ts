@@ -51,6 +51,7 @@ export const profiles = pgTable('profiles', {
   dailyGoalMinutes: integer('daily_goal_minutes').notNull().default(10),
   onboardingComplete: boolean('onboarding_complete').notNull().default(false),
   mathLevel: text('math_level').notNull().default('beginner'),
+  theme: text('theme').notNull().default('system'),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
 });

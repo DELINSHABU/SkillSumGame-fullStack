@@ -1,32 +1,29 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
 import type { ChallengeTask } from '@skillsum/shared';
+import { DailySkeleton } from '@/components/daily/DailySkeleton';
 import { GameScreen, type GameEndResult } from '@/components/game/GameScreen';
 import { LoadingScreen } from '@/components/shared/LoadingScreen';
 import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { api, type DailyState } from '@/lib/api';
+import { invalidate, mutateCache, useResource } from '@/lib/cache';
+import { GameIcon } from '@/components/ui/GameIcon';
 
 export default function DailyPage() {
-  const [daily, setDaily] = useState<DailyState | null>(null);
+  const { data: daily } = useResource('daily', () => api.daily.get());
   const [activeTask, setActiveTask] = useState<ChallengeTask | null>(null);
   const [saving, setSaving] = useState(false);
   const [claimed, setClaimed] = useState<number | null>(null);
 
-  const reload = useCallback(() => api.daily.get().then(setDaily), []);
-
-  useEffect(() => {
-    void reload();
-  }, [reload]);
-
-  if (!daily) return <LoadingScreen message="Loading challenges…" />;
+  if (!daily) return <DailySkeleton />;
 
   const doneCount = daily.tasks.filter((t) => daily.taskState[t.id]?.completed).length;
 
   const finishTask = async (task: ChallengeTask, end: GameEndResult) => {
     setSaving(true);
     try {
-      await api.sessions.submit({
+      const saved = await api.sessions.submit({
         mode: 'daily',
         dailyTaskId: task.id,
         practiceConfig: task.practiceConfig,
@@ -34,17 +31,26 @@ export default function DailyPage() {
         durationMs: end.durationMs,
         localHour: new Date().getHours(),
       });
+      // Reuse the submit response's task state — no second /api/daily round-trip.
+      const taskState = { ...daily.taskState, ...saved.dailyTaskState };
+      const completedAll = daily.tasks.every((t) => taskState[t.id]?.completed);
+      mutateCache<DailyState>('daily', { ...daily, taskState, completedAll });
+      invalidate('mastery');
+      invalidate('profile');
+      invalidate('auth/me');
+      invalidate('sessions');
     } finally {
       setActiveTask(null);
       setSaving(false);
-      await reload();
     }
   };
 
   const claim = async () => {
     const res = await api.daily.claim();
     setClaimed(res.xpAwarded);
-    await reload();
+    mutateCache<DailyState>('daily', { ...daily, xpRewarded: true });
+    invalidate('profile');
+    invalidate('auth/me');
   };
 
   if (activeTask?.practiceConfig) {
@@ -81,7 +87,7 @@ export default function DailyPage() {
           <div className="text-sm" style={{ color: 'var(--text-secondary)' }}>{doneCount}/3 done</div>
         </div>
         {daily.xpRewarded || claimed !== null ? (
-          <span className="text-2xl">✅</span>
+          <span className="text-2xl"><GameIcon emoji="✅" /></span>
         ) : daily.completedAll ? (
           <PrimaryButton onClick={() => void claim()}>Claim 🎁</PrimaryButton>
         ) : (
@@ -111,7 +117,7 @@ export default function DailyPage() {
           >
             <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-3">
-                <span className="text-2xl">{completed ? '✅' : ['🥇', '🥈', '🥉'][index]}</span>
+                <span className="text-2xl"><GameIcon emoji={completed ? '✅' : (['🥇', '🥈', '🥉'][index] || '🏅')} /></span>
                 <div>
                   <div className="font-bold" style={{ fontFamily: 'var(--font-display)' }}>{task.description}</div>
                   <div className="text-sm" style={{ color: 'var(--text-secondary)' }}>

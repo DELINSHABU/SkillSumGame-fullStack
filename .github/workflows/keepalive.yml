@@ -1,0 +1,40 @@
+name: Keep API warm
+
+# Render's free tier spins the API down after ~15 min idle, so the first request after
+# a lull takes 30–60s to wake it. This workflow pings the health endpoint during waking
+# hours to keep the instance awake and the app feeling fast.
+#
+# Honest caveats:
+#   • This only MASKS free-tier spin-down — it does not remove it. The real fix is a
+#     paid Render tier (or a platform without cold starts).
+#   • Pings consume Render's monthly free instance-hours (~750/mo), so we ping only a
+#     ~19h window, not 24/7. Widen/narrow the cron to your timezone and budget.
+#   • GitHub scheduled workflows are best-effort: they can be delayed several minutes
+#     under load and are auto-disabled after ~60 days of repo inactivity.
+#
+# Setup: add a repository variable API_HEALTH_URL =
+#   https://<your-render-app>.onrender.com/api/health
+# (Settings → Secrets and variables → Actions → Variables). Without it, this no-ops.
+
+on:
+  schedule:
+    - cron: '*/10 5-23 * * *' # every 10 min, ~05:00–23:59 UTC — adjust to your timezone
+  workflow_dispatch: {}
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping /api/health
+        env:
+          URL: ${{ vars.API_HEALTH_URL }}
+        run: |
+          if [ -z "$URL" ]; then
+            echo "API_HEALTH_URL repo variable not set — skipping."
+            echo "Set it to https://<your-render-app>.onrender.com/api/health"
+            exit 0
+          fi
+          echo "Pinging $URL"
+          # A response code doesn't matter — any request wakes the instance. Don't fail
+          # the job if the service is mid-wake (may briefly return 502).
+          curl -sS --max-time 60 "$URL" || echo "Ping did not complete (service may be waking)"

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { getLevelsByWorld, WORLDS_META } from '@skillsum/shared';
 import type { MasteryRow } from '@/lib/api';
 import { cn } from '@/lib/utils';
+import { GameIcon } from '@/components/ui/GameIcon';
 
 interface WorldSelectGridProps {
   mastery: MasteryRow[];
@@ -32,7 +33,7 @@ export function WorldSelectGrid({ mastery }: WorldSelectGridProps) {
             style={{ animationDelay: `${index * 0.07}s` }}
           >
             <div className="p-5" style={{ color: 'var(--text-on-pink)' }}>
-              <div className="text-4xl mb-1">{world.icon}</div>
+              <div className="text-4xl mb-1"><GameIcon emoji={world.icon} /></div>
               <div style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.25rem' }}>
                 World {world.id}
               </div>
@@ -52,7 +53,7 @@ export function WorldSelectGrid({ mastery }: WorldSelectGridProps) {
             </div>
             {!unlocked && (
               <div className="absolute inset-0 bg-white/60 backdrop-blur-sm flex items-center justify-center">
-                <span className="text-4xl" role="img" aria-label="Locked">🔒</span>
+                <span className="text-4xl" role="img" aria-label="Locked"><GameIcon emoji="🔒" /></span>
               </div>
             )}
           </div>

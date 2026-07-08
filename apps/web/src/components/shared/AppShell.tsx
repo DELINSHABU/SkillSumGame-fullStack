@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import { GameIcon } from '@/components/ui/GameIcon';
 
 const NAV_ITEMS = [
   { href: '/', label: 'Home', icon: '🏠' },
@@ -41,7 +42,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               color: isActive(item.href) ? 'var(--pink-500)' : 'var(--text-secondary)',
             }}
           >
-            <span className="text-xl">{item.icon}</span>
+            <span className="text-xl"><GameIcon emoji={item.icon} /></span>
             {item.label}
           </Link>
         ))}
@@ -55,7 +56,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       {/* Mobile bottom nav */}
       <nav
         className="lg:hidden fixed bottom-0 inset-x-0 flex justify-around pb-[env(safe-area-inset-bottom)]"
-        style={{ backgroundColor: 'var(--bg-card)', boxShadow: '0 -2px 8px rgba(0,0,0,0.06)' }}
+        style={{ backgroundColor: 'var(--bg-card)', boxShadow: 'var(--shadow-nav)' }}
       >
         {NAV_ITEMS.map((item) => (
           <Link
@@ -64,7 +65,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             className="flex flex-col items-center justify-center gap-0.5 min-h-[56px] min-w-[56px] active:scale-95"
             style={{ color: isActive(item.href) ? 'var(--pink-400)' : 'var(--text-tertiary)' }}
           >
-            <span className="text-xl">{item.icon}</span>
+            <span className="text-xl"><GameIcon emoji={item.icon} /></span>
             <span className="text-[10px] font-bold uppercase" style={{ fontFamily: 'var(--font-body)' }}>
               {item.label}
             </span>

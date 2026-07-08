@@ -4,6 +4,7 @@ import type {
   PracticeConfig,
   QuestionAttempt,
   StarCount,
+  Theme,
 } from '@skillsum/shared';
 import type { XPBreakdown } from '@skillsum/shared';
 
@@ -57,6 +58,7 @@ export interface Me {
   dailyGoalMinutes: number;
   onboardingComplete: boolean;
   mathLevel: string;
+  theme: Theme;
 }
 
 export interface ProfileStats {
@@ -167,8 +169,9 @@ export const api = {
   },
   profile: {
     get: () => get<FullProfile>('/api/profile'),
-    update: (body: Partial<Pick<Me, 'avatarEmoji' | 'dailyGoalMinutes' | 'mathLevel' | 'onboardingComplete'>>) =>
-      patch<Me>('/api/profile', body),
+    update: (
+      body: Partial<Pick<Me, 'avatarEmoji' | 'dailyGoalMinutes' | 'mathLevel' | 'onboardingComplete' | 'theme'>>
+    ) => patch<Me>('/api/profile', body),
   },
   mastery: {
     list: (worldId?: number) => get<MasteryRow[]>(worldId ? `/api/mastery?worldId=${worldId}` : '/api/mastery'),

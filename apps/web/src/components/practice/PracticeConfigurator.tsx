@@ -3,6 +3,7 @@
 import type { OperationType, PracticeConfig, PracticeMode } from '@skillsum/shared';
 import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { cn } from '@/lib/utils';
+import { GameIcon } from '@/components/ui/GameIcon';
 
 interface PracticeConfiguratorProps {
   config: PracticeConfig;
@@ -58,7 +59,7 @@ export function PracticeConfigurator({ config, onChange, personalBest, onStart }
         <div className="flex gap-2 flex-wrap">
           {MODES.map((m) => (
             <Chip key={m.id} active={config.mode === m.id} onClick={() => onChange({ ...config, mode: m.id })}>
-              {m.icon} {m.label}
+              <GameIcon emoji={m.icon} /> {m.label}
             </Chip>
           ))}
         </div>
@@ -129,7 +130,7 @@ export function PracticeConfigurator({ config, onChange, personalBest, onStart }
         </div>
       )}
 
-      <PrimaryButton fullWidth onClick={onStart}>🚀 Start Practice</PrimaryButton>
+      <PrimaryButton fullWidth onClick={onStart}><GameIcon emoji="🚀" /> Start Practice</PrimaryButton>
     </div>
   );
 }
