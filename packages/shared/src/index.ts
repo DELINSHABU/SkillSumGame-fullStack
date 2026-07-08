@@ -3,6 +3,7 @@ export * from './themes';
 export * from './rng';
 export * from './generator';
 export * from './xp';
+export * from './session';
 export * from './weakSpots';
 export * from './achievements';
 export * from './daily';

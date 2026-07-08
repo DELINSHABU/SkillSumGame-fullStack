@@ -2,11 +2,11 @@
 
 import { WorldSelectGrid } from '@/components/learn/WorldSelectGrid';
 import { WorldSelectSkeleton } from '@/components/learn/WorldSelectSkeleton';
-import { api } from '@/lib/api';
 import { useResource } from '@/lib/cache';
+import { masteryList } from '@/lib/data';
 
 export default function LearnPage() {
-  const { data: mastery } = useResource('mastery', () => api.mastery.list());
+  const { data: mastery } = useResource('mastery', () => masteryList());
 
   if (!mastery) return <WorldSelectSkeleton />;
 

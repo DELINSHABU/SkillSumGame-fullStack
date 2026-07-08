@@ -8,13 +8,15 @@ import { LoadingScreen } from '@/components/shared/LoadingScreen';
 import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { api, type DailyState } from '@/lib/api';
 import { invalidate, mutateCache, useResource } from '@/lib/cache';
+import { dailyGet, submitSession } from '@/lib/data';
 import { GameIcon } from '@/components/ui/GameIcon';
 
 export default function DailyPage() {
-  const { data: daily } = useResource('daily', () => api.daily.get());
+  const { data: daily } = useResource('daily', () => dailyGet());
   const [activeTask, setActiveTask] = useState<ChallengeTask | null>(null);
   const [saving, setSaving] = useState(false);
   const [claimed, setClaimed] = useState<number | null>(null);
+  const [savedOffline, setSavedOffline] = useState(false);
 
   if (!daily) return <DailySkeleton />;
 
@@ -23,7 +25,7 @@ export default function DailyPage() {
   const finishTask = async (task: ChallengeTask, end: GameEndResult) => {
     setSaving(true);
     try {
-      const saved = await api.sessions.submit({
+      const saved = await submitSession({
         mode: 'daily',
         dailyTaskId: task.id,
         practiceConfig: task.practiceConfig,
@@ -32,9 +34,11 @@ export default function DailyPage() {
         localHour: new Date().getHours(),
       });
       // Reuse the submit response's task state — no second /api/daily round-trip.
-      const taskState = { ...daily.taskState, ...saved.dailyTaskState };
+      // Offline: task progress is server-authoritative, so it applies after sync.
+      const taskState = { ...daily.taskState, ...saved.result.dailyTaskState };
       const completedAll = daily.tasks.every((t) => taskState[t.id]?.completed);
       mutateCache<DailyState>('daily', { ...daily, taskState, completedAll });
+      setSavedOffline(!saved.synced);
       invalidate('mastery');
       invalidate('profile');
       invalidate('auth/me');
@@ -94,6 +98,12 @@ export default function DailyPage() {
           <span className="text-stat" style={{ color: 'var(--xp-gold)' }}>{doneCount}/3</span>
         )}
       </div>
+
+      {savedOffline && (
+        <p className="text-center text-sm font-semibold" style={{ color: 'var(--text-secondary)' }}>
+          📴 Played offline — progress counts once you&apos;re back online
+        </p>
+      )}
 
       {claimed !== null && (
         <div className="rounded-2xl p-4 text-center animate-scale-in font-bold" style={{ backgroundColor: 'var(--pink-50)', color: 'var(--pink-500)', fontFamily: 'var(--font-display)' }}>

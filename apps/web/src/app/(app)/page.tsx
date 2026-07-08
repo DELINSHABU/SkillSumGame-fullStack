@@ -3,14 +3,14 @@
 import Link from 'next/link';
 import { ALL_LEVELS, getLevelById } from '@skillsum/shared';
 import { HomeSkeleton } from '@/components/shared/HomeSkeleton';
-import { api } from '@/lib/api';
 import { useResource } from '@/lib/cache';
+import { dailyGet, masteryList, me as fetchMe } from '@/lib/data';
 import { GameIcon } from '@/components/ui/GameIcon';
 
 export default function HomePage() {
-  const { data: me } = useResource('auth/me', () => api.auth.me());
-  const { data: mastery } = useResource('mastery', () => api.mastery.list());
-  const { data: daily } = useResource('daily', () => api.daily.get());
+  const { data: me } = useResource('auth/me', () => fetchMe());
+  const { data: mastery } = useResource('mastery', () => masteryList());
+  const { data: daily } = useResource('daily', () => dailyGet());
 
   if (!me || !daily) return <HomeSkeleton />;
 

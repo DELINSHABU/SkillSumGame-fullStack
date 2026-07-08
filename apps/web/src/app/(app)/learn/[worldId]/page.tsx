@@ -5,8 +5,8 @@ import { useParams } from 'next/navigation';
 import { getLevelsByWorld, WORLDS_META } from '@skillsum/shared';
 import { WorldMap } from '@/components/learn/WorldMap';
 import { WorldMapSkeleton } from '@/components/learn/WorldMapSkeleton';
-import { api } from '@/lib/api';
 import { useResource } from '@/lib/cache';
+import { masteryList } from '@/lib/data';
 import { GameIcon } from '@/components/ui/GameIcon';
 
 export default function WorldMapPage() {
@@ -14,7 +14,7 @@ export default function WorldMapPage() {
   const worldId = Number(params.worldId);
   const valid = Number.isInteger(worldId) && worldId >= 1 && worldId <= 8;
   const { data: mastery } = useResource(valid ? `mastery?worldId=${worldId}` : null, () =>
-    api.mastery.list(worldId)
+    masteryList(worldId)
   );
 
   const meta = WORLDS_META.find((w) => w.id === worldId);

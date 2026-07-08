@@ -94,6 +94,10 @@ export interface SessionSubmit {
   attempts: QuestionAttempt[];
   durationMs: number;
   localHour?: number;
+  /** Client-generated UUID — lets the server dedupe offline-queue replays. */
+  clientSessionId?: string;
+  /** ISO timestamp of when the game was played on the device (may predate sync). */
+  playedAt?: string;
 }
 
 export interface TaskStateEntry {

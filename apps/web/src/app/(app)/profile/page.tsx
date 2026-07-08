@@ -9,6 +9,8 @@ import { StatsPanel } from '@/components/profile/StatsPanel';
 import { ThemeToggle } from '@/components/profile/ThemeToggle';
 import { api } from '@/lib/api';
 import { invalidate, useResource } from '@/lib/cache';
+import { achievementsList, isGuest, masteryList, profileGet, sessionsHistory } from '@/lib/data';
+import { clearLocalData } from '@/lib/localStore';
 import { cn } from '@/lib/utils';
 import { GameIcon } from '@/components/ui/GameIcon';
 
@@ -16,10 +18,10 @@ type Tab = 'stats' | 'achievements' | 'history';
 
 export default function ProfilePage() {
   const router = useRouter();
-  const { data: profile } = useResource('profile', () => api.profile.get());
-  const { data: achievements } = useResource('achievements', () => api.achievements.list());
-  const { data: history } = useResource('sessions?limit=20', () => api.sessions.history({ limit: 20 }));
-  const { data: mastery } = useResource('mastery', () => api.mastery.list());
+  const { data: profile } = useResource('profile', () => profileGet());
+  const { data: achievements } = useResource('achievements', () => achievementsList());
+  const { data: history } = useResource('sessions?limit=20', () => sessionsHistory({ limit: 20 }));
+  const { data: mastery } = useResource('mastery', () => masteryList());
   const [tab, setTab] = useState<Tab>('stats');
 
   if (!profile) return <ProfileSkeleton />;
@@ -29,7 +31,15 @@ export default function ProfilePage() {
   const levelPct = Math.min((xpIntoLevel / Math.max(xpForLevel, 1)) * 100, 100);
 
   const logout = async () => {
-    await api.auth.logout();
+    if (!isGuest()) {
+      try {
+        await api.auth.logout();
+      } catch {
+        // Offline logout still clears the device; the server session expires on its own.
+      }
+    }
+    document.cookie = 'skillsum-guest=; path=/; max-age=0';
+    await clearLocalData(); // explicit logout is the only local-data wipe
     invalidate(''); // clear all cached account data for the next session
     router.push('/login');
     router.refresh();

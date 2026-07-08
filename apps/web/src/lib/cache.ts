@@ -8,7 +8,8 @@
 // requests for the same key, and revalidates in the background.
 //
 // Fetchers still call `src/lib/api.ts` — all HTTP originates there (frontend-feature
-// rule 1). No localStorage: the server stays the only persistence (rule 7).
+// rule 1). Durable offline persistence lives in `src/lib/localStore.ts` (IndexedDB),
+// fed by the offline-first fetchers in `src/lib/data.ts`; this layer stays memory-only.
 
 import { useCallback, useEffect, useSyncExternalStore } from 'react';
 

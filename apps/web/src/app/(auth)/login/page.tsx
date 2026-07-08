@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { TextField } from '@/components/ui/TextField';
 import { api, ApiError } from '@/lib/api';
+import { readLocalMe, writeLocalMe } from '@/lib/localStore';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -25,6 +26,29 @@ export default function LoginPage() {
       setError(err instanceof ApiError ? err.message : 'Something went wrong');
       setLoading(false);
     }
+  };
+
+  const playAsGuest = async () => {
+    // Local-only mode: progress lives in IndexedDB; signing up later syncs it.
+    document.cookie = `skillsum-guest=1; path=/; max-age=${60 * 60 * 24 * 365}`;
+    if (!(await readLocalMe())) {
+      await writeLocalMe({
+        id: 'guest',
+        email: '',
+        username: 'Guest',
+        avatarEmoji: '🧠',
+        xp: 0,
+        accountLevel: 1,
+        dailyStreak: 0,
+        dailyXpEarned: 0,
+        dailyGoalMinutes: 10,
+        onboardingComplete: true,
+        mathLevel: 'beginner',
+        theme: 'system',
+      });
+    }
+    router.push('/');
+    router.refresh();
   };
 
   return (
@@ -57,6 +81,15 @@ export default function LoginPage() {
           Create an account
         </Link>
       </p>
+
+      <button
+        type="button"
+        onClick={() => void playAsGuest()}
+        className="min-h-[48px] rounded-xl font-bold active:scale-95"
+        style={{ color: 'var(--text-secondary)', backgroundColor: 'var(--bg-card)', boxShadow: 'var(--shadow-sm)' }}
+      >
+        Play as guest (works offline)
+      </button>
     </div>
   );
 }

@@ -6,8 +6,9 @@ import { GameScreen, type GameEndResult } from '@/components/game/GameScreen';
 import { PracticeConfigurator } from '@/components/practice/PracticeConfigurator';
 import { PracticeResults } from '@/components/practice/PracticeResults';
 import { LoadingScreen } from '@/components/shared/LoadingScreen';
-import { api, type SessionSaveResult } from '@/lib/api';
+import type { SessionSaveResult } from '@/lib/api';
 import { invalidate, useResource } from '@/lib/cache';
+import { personalBests, submitSession } from '@/lib/data';
 
 type Phase = 'configure' | 'playing' | 'saving' | 'results';
 
@@ -27,26 +28,26 @@ export default function PracticePage() {
   const [saveError, setSaveError] = useState(false);
   const [pendingEnd, setPendingEnd] = useState<GameEndResult | null>(null);
 
-  const { data: personalBests, refetch: refetchPersonalBests } = useResource(
+  const { data: bests, refetch: refetchPersonalBests } = useResource(
     'sessions/personal-bests',
-    () => api.sessions.personalBests()
+    () => personalBests()
   );
 
-  const currentPb = (personalBests ?? []).find((pb) => pb.configKey === configKey(config))?.score ?? null;
+  const currentPb = (bests ?? []).find((pb) => pb.configKey === configKey(config))?.score ?? null;
 
   const save = async (end: GameEndResult) => {
     setPhase('saving');
     setPendingEnd(end);
     setSaveError(false);
     try {
-      const saved = await api.sessions.submit({
+      const saved = await submitSession({
         mode: 'practice',
         practiceConfig: config,
         attempts: end.attempts,
         durationMs: end.durationMs,
         localHour: new Date().getHours(),
       });
-      setResult(saved);
+      setResult(saved.result);
       setLastAttempts(end.attempts);
       setLastDuration(end.durationMs);
       setPhase('results');

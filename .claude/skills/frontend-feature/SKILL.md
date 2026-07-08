@@ -21,8 +21,8 @@ Next.js 14 App Router, TypeScript strict, Tailwind + CSS variables. Styling rule
 4. **Client components** (`'use client'`) for anything with state/effects — which is most screens. Fetch in `useEffect`, show `<LoadingScreen />` until data lands, surface errors with a retry button (see the save-retry pattern in `src/app/(app)/play/[levelId]/page.tsx`).
 5. **Multi-step screens are state machines**: one page component with a `Phase` union (`'pre' | 'playing' | 'saving' | 'post'`) rendering one sub-component per phase. See play and practice pages.
 6. **Gameplay reuses `GameScreen`** (`src/components/game/GameScreen.tsx`) — props select timer/target/star-bar/zen behavior. Never fork a second gameplay loop.
-7. **No `<form>` in game UI**; buttons with onClick. No localStorage/sessionStorage — server is the only persistence.
-8. Ephemeral gameplay state stays in React state/refs; results go to the server via `api.sessions.submit` and the server's response is the truth (XP, stars, achievements).
+7. **No `<form>` in game UI**; buttons with onClick. No localStorage/sessionStorage — durable client persistence is IndexedDB via `src/lib/localStore.ts` only (offline-first layer).
+8. Ephemeral gameplay state stays in React state/refs; results go through `src/lib/data.ts` `submitSession` (optimistic offline result + sync queue). The server's response is still the truth (XP, stars, achievements) — it overwrites the optimistic result on sync. Reads go through the offline-first fetchers in `data.ts`, not `api.*` directly.
 
 ## Gate before commit
 

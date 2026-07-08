@@ -8,8 +8,9 @@ import { GameScreen, type GameEndResult } from '@/components/game/GameScreen';
 import { PostLesson } from '@/components/learn/PostLesson';
 import { PreLesson } from '@/components/learn/PreLesson';
 import { LoadingScreen } from '@/components/shared/LoadingScreen';
-import { api, type SessionSaveResult } from '@/lib/api';
+import type { SessionSaveResult } from '@/lib/api';
 import { invalidate, useResource } from '@/lib/cache';
+import { masteryList, submitSession } from '@/lib/data';
 
 type Phase = 'pre' | 'playing' | 'saving' | 'post';
 
@@ -19,11 +20,12 @@ export default function PlayLevelPage() {
 
   const [phase, setPhase] = useState<Phase>('pre');
   const [result, setResult] = useState<SessionSaveResult | null>(null);
+  const [savedOffline, setSavedOffline] = useState(false);
   const [saveError, setSaveError] = useState(false);
   const [pendingEnd, setPendingEnd] = useState<GameEndResult | null>(null);
 
   const { data: masteryRows } = useResource(level ? `mastery?worldId=${level.worldId}` : null, () =>
-    api.mastery.list(level!.worldId)
+    masteryList(level!.worldId)
   );
   const mastery = masteryRows?.find((m) => m.levelId === level?.id);
 
@@ -41,19 +43,20 @@ export default function PlayLevelPage() {
     setPendingEnd(end);
     setSaveError(false);
     try {
-      const saved = await api.sessions.submit({
+      const saved = await submitSession({
         mode: 'learn',
         levelId: level.id,
         attempts: end.attempts,
         durationMs: end.durationMs,
         localHour: new Date().getHours(),
       });
-      // Progress + XP changed server-side; drop stale reads so the next visit revalidates.
+      // Progress + XP changed (server or local); drop stale reads so the next visit revalidates.
       invalidate('mastery');
       invalidate('profile');
       invalidate('auth/me');
       invalidate('sessions');
-      setResult(saved);
+      setResult(saved.result);
+      setSavedOffline(!saved.synced);
       setPhase('post');
     } catch {
       setSaveError(true);
@@ -98,14 +101,24 @@ export default function PlayLevelPage() {
 
   if (phase === 'post' && result) {
     return (
-      <PostLesson
-        level={level}
-        result={result}
-        onRetry={() => {
-          setResult(null);
-          setPhase('playing');
-        }}
-      />
+      <>
+        {savedOffline && (
+          <p
+            className="text-center text-sm font-semibold py-2"
+            style={{ color: 'var(--text-secondary)' }}
+          >
+            📴 Saved on this device — will sync when you&apos;re back online
+          </p>
+        )}
+        <PostLesson
+          level={level}
+          result={result}
+          onRetry={() => {
+            setResult(null);
+            setPhase('playing');
+          }}
+        />
+      </>
     );
   }
 

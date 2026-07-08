@@ -4,7 +4,8 @@ const PUBLIC_PATHS = ['/login', '/signup'];
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const hasSession = request.cookies.has('sid');
+  // Guest mode plays fully offline from local data — no server session exists.
+  const hasSession = request.cookies.has('sid') || request.cookies.has('skillsum-guest');
   const isPublic = PUBLIC_PATHS.some((p) => pathname.startsWith(p));
 
   if (!hasSession && !isPublic) {
