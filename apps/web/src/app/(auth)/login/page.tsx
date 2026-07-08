@@ -75,7 +75,7 @@ export default function LoginPage() {
           </p>
         )}
         <PrimaryButton onClick={submit} disabled={loading || !email || !password} fullWidth>
-          {loading ? 'Logging in…' : '<GameIcon emoji="🚀" /> Log In'}
+          {loading ? 'Logging in…' : '🚀 Log In'}
         </PrimaryButton>
       </div>
 

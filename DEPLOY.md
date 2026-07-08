@@ -20,11 +20,10 @@ app is pure Next.js, so Vercel is the best host. Neon backs both with free Postg
 
 ## 0. Prerequisites
 
-This repo has **no git remote** yet. Render and Vercel deploy from GitHub, so first:
+Render and Vercel deploy from GitHub. This repo's remote is
+`https://github.com/DELINSHABU/SkillSumGame-fullStack.git` — make sure `main` is pushed:
 
 ```bash
-# create an empty repo on github.com, then:
-git remote add origin https://github.com/<you>/SkillSumGame.git
 git push -u origin main
 ```
 

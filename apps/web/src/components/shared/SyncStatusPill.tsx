@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useSyncExternalStore } from 'react';
+import { isGuest } from '@/lib/data';
 import { getPendingCount, installSyncTriggers, subscribePendingCount } from '@/lib/sync';
 
 // Floating status pill: shows when the device is offline and/or games are
@@ -29,7 +30,9 @@ export function SyncStatusPill() {
     ? pending > 0
       ? `📴 Offline — ${pending} game${pending === 1 ? '' : 's'} saved on device`
       : '📴 Offline — progress saves on device'
-    : `☁️ Syncing ${pending} game${pending === 1 ? '' : 's'}…`;
+    : isGuest()
+      ? `📱 ${pending} game${pending === 1 ? '' : 's'} on this device — sign up to sync`
+      : `☁️ Syncing ${pending} game${pending === 1 ? '' : 's'}…`;
 
   return (
     <div
