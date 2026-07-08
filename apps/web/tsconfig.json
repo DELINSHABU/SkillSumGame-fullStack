@@ -2,7 +2,8 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "target": "ES2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": ["dom", "dom.iterable", "esnext", "webworker"],
+    "types": ["@serwist/next/typings"],
     "jsx": "preserve",
     "noEmit": true,
     "incremental": true,

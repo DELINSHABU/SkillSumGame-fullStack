@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <style>
+      .outline { fill: none; stroke: #31162B; stroke-width: 26; stroke-linecap: round; stroke-linejoin: round; }
+    </style>
+  </defs>
+
+  <!-- Soft Arcade rounded-square tile, pink-300 -->
+  <rect x="16" y="16" width="480" height="480" rx="120" fill="#ff80ab" stroke="#31162B" stroke-width="20" />
+  <!-- bottom shade lip, pink-500 -->
+  <path d="M136 496 L376 496 A120 120 0 0 0 496 376 L496 340 A120 156 0 0 1 376 472 L136 472 A120 156 0 0 1 16 340 L16 376 A120 120 0 0 0 136 496 Z" fill="#e0396e" opacity="0.5" />
+
+  <!-- plus glyph, mint -->
+  <g transform="translate(148, 148)">
+    <rect x="80" y="8" width="56" height="200" rx="28" fill="#06D6A0" stroke="#31162B" stroke-width="16" />
+    <rect x="8" y="80" width="200" height="56" rx="28" fill="#06D6A0" stroke="#31162B" stroke-width="16" />
+    <rect x="90" y="24" width="12" height="30" rx="6" fill="#FFFFFF" />
+    <rect x="24" y="90" width="30" height="12" rx="6" fill="#FFFFFF" />
+  </g>
+
+  <!-- sparkles -->
+  <path d="M104 96 Q104 120 128 120 Q104 120 104 144 Q104 120 80 120 Q104 120 104 96 Z" fill="#FFFFFF" />
+  <path d="M408 356 Q408 376 428 376 Q408 376 408 396 Q408 376 388 376 Q408 376 408 356 Z" fill="#FFFFFF" opacity="0.9" />
+  <circle cx="416" cy="120" r="10" fill="#FFFFFF" opacity="0.9" />
+</svg>

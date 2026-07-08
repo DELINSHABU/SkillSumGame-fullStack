@@ -15,12 +15,25 @@ const jetbrains = JetBrains_Mono({ subsets: ['latin'], weight: ['700'], variable
 export const metadata: Metadata = {
   title: 'SkillSum — Mental Math Mastery',
   description: 'Learn mental math tricks through 400 levels of play.',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'SkillSum',
+  },
+  icons: {
+    apple: '/apple-touch-icon.png',
+  },
 };
 
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
+  // Soft Arcade --bg-canvas (arcade-light / arcade-dark) — manifest/meta can't use CSS vars.
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#fef6f9' },
+    { media: '(prefers-color-scheme: dark)', color: '#17131c' },
+  ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

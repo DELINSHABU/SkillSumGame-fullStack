@@ -95,6 +95,10 @@ export default function ProfilePage() {
       >
         Log out
       </button>
+
+      <p className="text-center text-xs" style={{ color: 'var(--text-secondary)' }}>
+        Version {process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA?.slice(0, 7) ?? 'dev'}
+      </p>
     </div>
   );
 }
