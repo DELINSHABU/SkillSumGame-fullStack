@@ -7,6 +7,7 @@ import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { TextField } from '@/components/ui/TextField';
 import { api, ApiError } from '@/lib/api';
 import { readLocalMe, writeLocalMe } from '@/lib/localStore';
+import { drainQueue } from '@/lib/sync';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -20,6 +21,9 @@ export default function LoginPage() {
     setLoading(true);
     try {
       await api.auth.login({ email, password });
+      // Ending any guest mode: replay offline games into this account.
+      document.cookie = 'skillsum-guest=; path=/; max-age=0';
+      await drainQueue();
       router.push('/');
       router.refresh();
     } catch (err) {

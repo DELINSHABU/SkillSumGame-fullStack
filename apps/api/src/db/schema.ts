@@ -99,9 +99,17 @@ export const gameSessions = pgTable(
     starsEarned: smallint('stars_earned'),
     isPersonalBest: boolean('is_personal_best').notNull().default(false),
     attempts: jsonb('attempts').notNull().default([]),
+    // Client-generated UUID for offline-queue replays — the unique index makes
+    // re-submitting the same session a no-op instead of double-crediting XP.
+    clientSessionId: uuid('client_session_id'),
+    // Client-claimed play time (may predate sync); stats only, never streak math.
+    playedAt: timestamp('played_at', { withTimezone: true }),
     startedAt: timestamp('started_at', { withTimezone: true }).notNull().defaultNow(),
   },
-  (t) => [index('idx_game_sessions_user').on(t.userId, t.startedAt)]
+  (t) => [
+    index('idx_game_sessions_user').on(t.userId, t.startedAt),
+    uniqueIndex('uq_game_sessions_client_id').on(t.userId, t.clientSessionId),
+  ]
 );
 
 export const personalBests = pgTable(

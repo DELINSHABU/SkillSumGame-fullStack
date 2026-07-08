@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { GameIcon } from '@/components/ui/GameIcon';
+import { SyncStatusPill } from '@/components/shared/SyncStatusPill';
 
 const NAV_ITEMS = [
   { href: '/', label: 'Home', icon: '🏠' },
@@ -20,6 +21,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen lg:grid lg:grid-cols-[260px_1fr]" style={{ backgroundColor: 'var(--bg-canvas)' }}>
+      <SyncStatusPill />
       {/* Desktop sidebar */}
       <aside
         className="hidden lg:flex flex-col gap-2 p-6 sticky top-0 h-screen"

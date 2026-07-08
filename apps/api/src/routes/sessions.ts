@@ -59,6 +59,10 @@ const submitSchema = z.object({
   attempts: z.array(attemptSchema).max(500),
   durationMs: z.number().int().min(0).max(3_600_000),
   localHour: z.number().int().min(0).max(23).optional(),
+  // Offline-queue replay support: unique per game on the device, so replays
+  // return the original result instead of double-crediting.
+  clientSessionId: z.string().uuid().optional(),
+  playedAt: z.string().datetime({ offset: true }).optional(),
 });
 
 interface TaskStateEntry {
@@ -86,6 +90,12 @@ export const sessionRoutes = new Hono<AuthEnv>()
 
     const level = body.mode === 'learn' || body.mode === 'daily' ? getLevelById(body.levelId ?? -1) : undefined;
     if (body.mode === 'learn' && !level) return c.json({ error: 'Unknown level' }, 400);
+
+    // Idempotent replay: an offline queue may resubmit after a lost response.
+    if (body.clientSessionId) {
+      const existing = await findByClientSessionId(userId, body.clientSessionId);
+      if (existing) return c.json(existing);
+    }
 
     const [profile] = await db.select().from(profiles).where(eq(profiles.userId, userId)).limit(1);
     if (!profile) return c.json({ error: 'Profile not found' }, 404);
@@ -126,25 +136,39 @@ export const sessionRoutes = new Hono<AuthEnv>()
       }
     );
 
-    // Persist the session.
-    const [savedSession] = await db
-      .insert(gameSessions)
-      .values({
-        userId,
-        mode: body.mode,
-        levelId: body.levelId,
-        practiceConfig: body.practiceConfig,
-        correct: recomputed.correct,
-        wrong: recomputed.wrong,
-        accuracy: String(recomputed.accuracy),
-        maxStreak: recomputed.maxStreak,
-        durationMs: body.durationMs,
-        xpEarned: xpBreakdown.total,
-        starsEarned,
-        isPersonalBest: newPersonalBest,
-        attempts: attempts,
-      })
-      .returning({ id: gameSessions.id });
+    // Persist the session. A concurrent replay of the same clientSessionId can
+    // slip past the pre-check; the unique index turns it into a returned
+    // original instead of a double credit.
+    let savedSession: { id: string } | undefined;
+    try {
+      [savedSession] = await db
+        .insert(gameSessions)
+        .values({
+          userId,
+          mode: body.mode,
+          levelId: body.levelId,
+          practiceConfig: body.practiceConfig,
+          correct: recomputed.correct,
+          wrong: recomputed.wrong,
+          accuracy: String(recomputed.accuracy),
+          maxStreak: recomputed.maxStreak,
+          durationMs: body.durationMs,
+          xpEarned: xpBreakdown.total,
+          starsEarned,
+          isPersonalBest: newPersonalBest,
+          attempts: attempts,
+          clientSessionId: body.clientSessionId,
+          // Client-claimed play time is stats-only; clamp so it can't be in the future.
+          playedAt: body.playedAt ? new Date(Math.min(Date.parse(body.playedAt), Date.now())) : undefined,
+        })
+        .returning({ id: gameSessions.id });
+    } catch (err) {
+      if (body.clientSessionId && isUniqueViolation(err)) {
+        const existing = await findByClientSessionId(userId, body.clientSessionId);
+        if (existing) return c.json(existing);
+      }
+      throw err;
+    }
 
     // Upsert mastery (learn mode) — keep bests.
     if (body.mode === 'learn' && level && starsEarned !== undefined) {
@@ -305,6 +329,62 @@ export const sessionRoutes = new Hono<AuthEnv>()
       .where(eq(personalBests.userId, c.get('userId')));
     return c.json(rows);
   });
+
+function isUniqueViolation(err: unknown): boolean {
+  return typeof err === 'object' && err !== null && 'code' in err && err.code === '23505';
+}
+
+/**
+ * Rebuild a submit response for a session that already landed. The per-bonus
+ * XP breakdown isn't stored, so only the total is reconstructed — the offline
+ * sync queue only checks for a 2xx before dropping its pending entry.
+ */
+async function findByClientSessionId(userId: string, clientSessionId: string) {
+  const [row] = await db
+    .select()
+    .from(gameSessions)
+    .where(and(eq(gameSessions.userId, userId), eq(gameSessions.clientSessionId, clientSessionId)))
+    .limit(1);
+  if (!row) return null;
+
+  const [profile] = await db.select().from(profiles).where(eq(profiles.userId, userId)).limit(1);
+  const today = getTodayDate();
+  const [daily] = await db
+    .select()
+    .from(dailyProgress)
+    .where(and(eq(dailyProgress.userId, userId), eq(dailyProgress.challengeDate, today)))
+    .limit(1);
+
+  return {
+    sessionId: row.id,
+    recomputed: {
+      correct: row.correct,
+      wrong: row.wrong,
+      accuracy: Number(row.accuracy),
+      maxStreak: row.maxStreak,
+    },
+    starsEarned: (row.starsEarned ?? undefined) as StarCount | undefined,
+    xpBreakdown: {
+      base: 0,
+      accuracyBonus: 0,
+      speedBonus: 0,
+      streakBonus: 0,
+      modeBonus: 0,
+      multiplier: 1,
+      total: row.xpEarned,
+    },
+    newAchievements: [] as string[],
+    newPersonalBest: row.isPersonalBest,
+    dailyTaskState: (daily?.taskState as TaskState | undefined) ?? {},
+    profile: {
+      xp: profile?.xp ?? 0,
+      accountLevel: profile?.accountLevel ?? 1,
+      leveledUp: false,
+      dailyStreak: profile?.dailyStreak ?? 0,
+      dailyXpEarned: profile?.dailyXpEarned ?? 0,
+    },
+  };
+}
 
 interface DailyUpdateInput {
   dailyTaskId?: string;

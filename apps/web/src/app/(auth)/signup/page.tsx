@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { TextField } from '@/components/ui/TextField';
 import { api, ApiError } from '@/lib/api';
+import { drainQueue } from '@/lib/sync';
 
 export default function SignupPage() {
   const router = useRouter();
@@ -24,6 +25,9 @@ export default function SignupPage() {
     setLoading(true);
     try {
       await api.auth.signup({ email, username, password });
+      // Guest upgrade: end guest mode and replay any offline games into the new account.
+      document.cookie = 'skillsum-guest=; path=/; max-age=0';
+      await drainQueue();
       router.push('/');
       router.refresh();
     } catch (err) {
